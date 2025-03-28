@@ -1,4 +1,3 @@
-import { error } from "console";
 import Log from "../models/Log.js";
 import { QueryOptions } from "mongoose";
 

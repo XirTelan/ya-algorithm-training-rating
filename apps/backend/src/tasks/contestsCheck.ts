@@ -1,8 +1,8 @@
 import { FastifyInstance } from "fastify";
-import contestService from "../services/contestService";
-import { fetchLeaderbord } from "../lib/parser";
-import logService from "../services/logService";
-import { logger } from "../server";
+import contestService from "../services/contestService.js";
+import { fetchLeaderbord } from "../lib/parser.js";
+import logService from "../services/logService.js";
+import { logger } from "../server.js";
 
 export default async function contestsCheck(fastify: FastifyInstance) {
   fastify.log.info("Starting background job: checkContests");

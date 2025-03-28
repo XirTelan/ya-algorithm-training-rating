@@ -3,7 +3,7 @@ import {
   deleteContest,
   getContests,
   updateContests,
-} from "../controllers/contestContoller";
+} from "../controllers/contestContoller.js";
 
 export default async function contestRoutes(fastify: FastifyInstance) {
   fastify.get("/contests", getContests);

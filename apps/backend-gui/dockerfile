@@ -14,23 +14,15 @@ RUN pnpm add turbo -g
 COPY . .
 RUN turbo prune @yatr/backend-gui --docker
 
-
-
 FROM base AS installer
 RUN apk update
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-
-
 COPY --from=builder /app/out/json/ .
 RUN pnpm install
 
-
 COPY --from=builder /app/out/full/ .
-
-COPY --from=builder /app/out/full/ .
-
 RUN pnpm turbo build
 
 FROM base AS runner

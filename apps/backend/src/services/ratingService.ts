@@ -1,7 +1,7 @@
 import Rating from "../models/Rating.js";
 import { DataEntry } from "../../types";
 import logService from "./logService.js";
-import { logger } from "../server";
+import { logger } from "../server.js";
 
 export const updateRating = async (data: DataEntry[], contestId: string) => {
   
