@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "ES2022", // ECMAScript target version
+    "module": "ESNext", // Module system to use
+    "moduleResolution": "node", // Node module resolution strategy
+    "esModuleInterop": true, // Enables interoperability between CommonJS and ES Modules
+    "skipLibCheck": true, // Skip type checking of declaration files
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "./dist", // Specify output directory for compiled JS files
+    "rootDir": "./src",
+    "strict": true, // Enable strict mode for better type checking
+    "resolveJsonModule": true // Allow importing JSON modules
+  },
+  "include": ["src/**/*.ts"], // Include all TypeScript files in the src folder
+  "exclude": ["node_modules"] // Exclude node_modules
+}
