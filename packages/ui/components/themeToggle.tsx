@@ -1,9 +1,8 @@
+import { useTheme } from "../hooks/useTheme";
 import { Moon, Sun } from "lucide-react";
+import { Toggle } from "./ui/toggle";
 
-import { useTheme } from "@/components/themeProvider";
-import { Toggle } from "@repo/ui/toggle";
-
-export default function ModeToggle() {
+export function ModeToggle() {
   const { theme, setTheme } = useTheme();
 
   const toggle = () => {
