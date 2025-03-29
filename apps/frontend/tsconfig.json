@@ -2,8 +2,9 @@
   "include": ["src"],
   "compilerOptions": {
     "jsx": "react-jsx",
-    "target": "ES2022",
-    "module": "CommonJS",
+    "target": "ESNext",
+    "module": "Preserve",
+    "moduleResolution": "bundler",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
