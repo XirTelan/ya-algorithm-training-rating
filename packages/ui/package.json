@@ -11,7 +11,7 @@
   ],
   "license": "MIT",
   "scripts": {
-    "lint": "eslint \"**/*.ts\"",
+    "lint": "eslint \"**/*.tsx\"",
     "check-types": "tsc --noEmit",
     "dev": "tailwindcss -i ./global.css -o ./dist/index.css --watch"
   },
@@ -46,11 +46,8 @@
     "tw-animate-css": "^1.2.4"
   },
   "devDependencies": {
-    "@repo/eslint-config": "workspace:*",
-    "@repo/typescript-config": "workspace:*",
     "@types/react": "^19.0.12",
     "@types/react-dom": "^19.0.4",
-    "eslint": "^9.23.0",
     "typescript": "5.8.2"
   }
 }
