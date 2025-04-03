@@ -105,3 +105,7 @@
     @apply bg-background text-foreground;
   }
 }
+
+button:hover:not(:disabled) {
+  cursor: pointer;
+}
