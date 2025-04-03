@@ -9,7 +9,7 @@ export const Route = createRootRoute({
     <>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
         <Header />
-        <main className="flex flex-col gap-4">
+        <main className="flex flex-col gap-4 container mx-auto">
           <Outlet />
         </main>
         <Toaster />
