@@ -13,12 +13,14 @@ import contestsCheck from "./tasks/contestsCheck.js";
 import swaggerConfig, { swaggerUiConfig } from "./plugins/swaggerConfig.js";
 import fastifyEnvConfig from "./plugins/fastifyEnvConfig.js";
 
+import loggerConfig from "./plugins/loggerConfig.js";
+
 const DEFAULT_PORT = 3000;
 dotenv.config();
 
 const fastify = Fastify({
   exposeHeadRoutes: true,
-  logger: true,
+  logger: loggerConfig,
 });
 export const logger = fastify.log;
 
