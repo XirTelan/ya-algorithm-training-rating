@@ -3,6 +3,6 @@ import { getSession, updateSession } from "../controllers/sessionContoller.js";
 
 
 export default async function sessionRotes(fastify: FastifyInstance) {
-  fastify.get("/session", getSession);
-  fastify.post("/session", updateSession);
+  fastify.get("/api/session", getSession);
+  fastify.post("/api/session", updateSession);
 }

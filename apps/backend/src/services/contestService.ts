@@ -1,8 +1,12 @@
 import Contest from "../models/Contest.js";
 import { ContestDTO } from "../../types.js";
+import { logger } from "../server.js";
 
-async function getContests() {
-  const res = await Contest.find({}, { "stats._id": 0 }).lean();
+async function getContests(): Promise<ContestDTO[]> {
+  const res = (await Contest.find(
+    {},
+    { updatedAt: 0, "stats._id": 0 }
+  ).lean()) as unknown as ContestDTO[];
   return res;
 }
 async function getContestById(id: string): Promise<ContestDTO | null> {
@@ -21,6 +25,7 @@ async function updateContestById(id: string, data: Partial<ContestDTO>) {
     data
   );
 }
+
 async function updateContests(data: ContestDTO[]) {
   try {
     await Promise.all(
@@ -36,7 +41,7 @@ async function updateContests(data: ContestDTO[]) {
     );
     return { success: true };
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     return { success: false };
   }
 }

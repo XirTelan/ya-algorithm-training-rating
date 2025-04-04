@@ -6,7 +6,7 @@ import {
 } from "../controllers/contestContoller.js";
 
 export default async function contestRoutes(fastify: FastifyInstance) {
-  fastify.get("/contests", getContests);
-  fastify.post("/contests", updateContests);
-  fastify.delete("/contests/:id", deleteContest);
+  fastify.get("/api/contests", getContests);
+  fastify.post("/api/contests", updateContests);
+  fastify.delete("/api/contests/:id", deleteContest);
 }
