@@ -1,6 +1,3 @@
-import { useState } from "react";
-import useDebounce from "../../../hooks/useDebounce";
-import { Button } from "@repo/ui/button";
 import {
   Table,
   TableBody,
@@ -12,52 +9,42 @@ import {
   TableRow,
 } from "@repo/ui/table";
 
-import PaginationBlock from "./PaginationBlock";
-import { Route } from "@/routes";
-import useGetRating from "../api/queries/useGetRating";
+import { RatingDTO } from "@/types";
 
-const RatingTable = () => {
-  const { page } = Route.useSearch();
+type RatingTableProps = {
+  data: RatingDTO;
+};
 
-  const { data, isPending, isError } = useGetRating(page);
-
-  const [search, setSearch] = useState("");
-  const debouncedValue = useDebounce(search);
-
+const RatingTable = ({ data }: RatingTableProps) => {
   return (
-    <section>
-      <input value={search} onChange={(e) => setSearch(e.target.value)} />
-      <Table className=" relative -z-1">
-        <TableCaption className=" caption-top">Rating</TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead>2</TableHead>
-            <TableHead>3</TableHead>
-            <TableHead>1</TableHead>
+    <Table className=" relative">
+      <TableHeader>
+        <TableRow>
+          <TableHead className="w-10">№</TableHead>
+          <TableHead>Имя участника</TableHead>
+          <TableHead>Задач</TableHead>
+          <TableHead>Попыток</TableHead>
+          <TableHead>Штраф</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {data.items.map((item, i) => (
+          <TableRow key={i}>
+            <TableCell>{item.position}</TableCell>
+            <TableCell>{item._id}</TableCell>
+            <TableCell>{item.totalTasks}</TableCell>
+            <TableCell>{item.totalTries}</TableCell>
+            <TableCell>{item.totalFine}</TableCell>
           </TableRow>
-        </TableHeader>
-        <TableBody>
-          {[
-            1, 2, 3, 4, 5, 6,
-
-            1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-          ].map((item, i) => (
-            <TableRow key={i}>
-              <TableCell>1</TableCell>
-              <TableCell>2</TableCell>
-              <TableCell>3</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-        <TableFooter>
-          <TableRow>
-            <TableCell colSpan={3}>Total</TableCell>
-            <TableCell className="text-right">$2,500.00</TableCell>
-          </TableRow>
-        </TableFooter>
-      </Table>
-      <PaginationBlock totalCount={1500} />
-    </section>
+        ))}
+      </TableBody>
+      <TableFooter>
+        <TableRow>
+          <TableCell colSpan={3}>Total</TableCell>
+          <TableCell className="text-right">{data.totalCount}</TableCell>
+        </TableRow>
+      </TableFooter>
+    </Table>
   );
 };
 
