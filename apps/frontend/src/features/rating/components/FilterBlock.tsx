@@ -6,7 +6,7 @@ import { FilterIcon, Search } from "lucide-react";
 
 const FilterBlock = () => {
   return (
-    <section className="my-2 flex  gap-1">
+    <div className="my-2 flex  gap-1">
       <div className="relative flex grow">
         <Search
           className="absolute right-0 m-auto bottom-0 top-0 me-2"
@@ -18,7 +18,7 @@ const FilterBlock = () => {
         <PopoverTrigger asChild>
           <Button variant="outline">
             <FilterIcon />
-        </Button>
+          </Button>
         </PopoverTrigger>
         <PopoverContent className="w-80 p-4">
           <div className="grid gap-4">
@@ -69,7 +69,7 @@ const FilterBlock = () => {
           </div>
         </PopoverContent>
       </Popover>
-    </section>
+    </div>
   );
 };
 

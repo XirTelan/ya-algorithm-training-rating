@@ -16,13 +16,7 @@ import { Route } from "@/routes/index";
 import usePagination from "../hooks/usePagination";
 import { useQuery } from "@tanstack/react-query";
 
-export default function PaginationBlock({
-  totalCount,
-}: {
-  totalCount: number;
-}) {
-  const pageCount = 40;
-
+export default function PaginationBlock({ pageCount }: { pageCount: number }) {
   const { page, activeIndex, paginationPages, setActiveIndex, navigateToPage } =
     usePagination(pageCount);
 
