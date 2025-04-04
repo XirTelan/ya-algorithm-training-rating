@@ -16,7 +16,8 @@
   "scripts": {
     "build": "tsc",
     "start": "node ./dist/server.js",
-    "dev": "tsx watch src/server.ts"
+    "dev": "tsx watch src/server.ts",
+    "dev-debug": "tsx --inspect-brk  src/server.ts"
   },
   "devDependencies": {
     "@types/node": "^22.13.14",

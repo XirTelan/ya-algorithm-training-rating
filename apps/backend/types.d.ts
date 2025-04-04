@@ -33,3 +33,12 @@ export type DataEntry = {
   fine: string;
   tries: number;
 };
+
+export type ContestData = {
+  _id: string;
+  position: number;
+  totalTasks: number;
+  totalFine: number;
+  totalTries: number;
+  byContest: { [key: string]: unknown }[];
+};

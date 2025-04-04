@@ -1,12 +1,12 @@
 import sessionService from "../services/sessionService.js";
 import * as cheerio from "cheerio";
-import { updateRating } from "../services/ratingService.js";
 import { children } from "cheerio/dist/commonjs/api/traversing";
 
 import { ConfigType, DataEntry } from "../../types";
 import contestService from "../services/contestService.js";
 import logService from "../services/logService.js";
 import { logger } from "../server.js";
+import ratingService from "../services/ratingService.js";
 
 const CONTEST_URL = `https://contest.yandex.ru/contest`;
 
@@ -15,7 +15,7 @@ export async function fetchLeaderbord(contestId: string) {
   if (!session?.value) return { success: false };
   const { value: sessionId } = session;
   const constestData = await contestService.getContestById(contestId);
-  
+
   if (!sessionId) return;
 
   const contestInfo = await getContestInfo(contestId, sessionId);
@@ -26,7 +26,6 @@ export async function fetchLeaderbord(contestId: string) {
     return;
   }
 
-
   const queries = [];
 
   for (let i = 1; i <= contestInfo.lastPage; i++) {
@@ -35,7 +34,7 @@ export async function fetchLeaderbord(contestId: string) {
     );
   }
   const res = await Promise.all(queries);
-  await updateRating(
+  await ratingService.updateRating(
     res.reduce((acc, cur) => {
       return [...acc, ...cur];
     }, []),

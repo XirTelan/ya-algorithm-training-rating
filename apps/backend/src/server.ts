@@ -12,7 +12,7 @@ import logRoutes from "./routes/logRoutes.js";
 import contestsCheck from "./tasks/contestsCheck.js";
 import swaggerConfig, { swaggerUiConfig } from "./plugins/swaggerConfig.js";
 import fastifyEnvConfig from "./plugins/fastifyEnvConfig.js";
-
+import ratingRoute from "./routes/ratingRoute.js";
 import loggerConfig from "./plugins/loggerConfig.js";
 
 const DEFAULT_PORT = 3000;
@@ -36,6 +36,7 @@ fastify.register(cors);
 fastify.register(contestRoutes);
 fastify.register(sessionRotes);
 fastify.register(logRoutes);
+fastify.register(ratingRoute);
 
 fastify.register(contestsCheck);
 
