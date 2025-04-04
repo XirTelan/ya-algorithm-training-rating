@@ -18,7 +18,7 @@ const SessionBlock = () => {
 
   async function updateSessionId(data: string) {
     try {
-      const res = await fetch(`${BACKEND_URL}/session`, {
+      const res = await fetch(`${BACKEND_URL}/api/session`, {
         method: "POST",
         body: JSON.stringify({
           name: "sessionId",
@@ -43,7 +43,7 @@ const SessionBlock = () => {
       try {
         const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
         if (!BACKEND_URL) throw new Error("BACKEND_URL is empty");
-        const res = await fetch(`${BACKEND_URL}/session`);
+        const res = await fetch(`${BACKEND_URL}/api/session`);
         if (res.ok) {
           const data: Session = await res.json();
           setSessionToken(data.value);

@@ -45,7 +45,7 @@ const Logger = () => {
     const getLogs = async () => {
       try {
         const res = await fetch(
-          `${BACKEND_URL}/logs?type=${filter.type}&time=${filter.time}`
+          `${BACKEND_URL}/api/logs?type=${filter.type}&time=${filter.time}`
         );
         if (res.ok) {
           const data = await res.json();

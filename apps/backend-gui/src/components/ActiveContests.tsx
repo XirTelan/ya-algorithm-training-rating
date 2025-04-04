@@ -3,6 +3,7 @@ import { useForm, FieldValues, useFieldArray } from "react-hook-form";
 
 import { EllipsisVertical, Info, X } from "lucide-react";
 import { Contest } from "@/types";
+import { Separator } from "@repo/ui/separator";
 import { Button } from "@repo/ui/button";
 import { toast } from "@repo/ui";
 import { Card, CardContent, CardFooter } from "@repo/ui/card";
@@ -31,13 +32,13 @@ const ActiveContests = () => {
   }>();
 
   const { fields, append, remove } = useFieldArray({
-    control, // control props comes from useForm (optional: if you are using FormProvider)
-    name: "contests", // unique name for your Field Array
+    control,
+    name: "contests",
   });
 
   useEffect(() => {
     async function loadData() {
-      const responce = await fetch(`${BACKEND_URL}/contests`);
+      const responce = await fetch(`${BACKEND_URL}/api/contests`);
       if (responce.ok) {
         const result = await responce.json();
         if (result.success) {
@@ -61,7 +62,7 @@ const ActiveContests = () => {
 
   const deleteContest = async (indx: number) => {
     if ("_id" in fields[indx]) {
-      const res = await fetch(`${BACKEND_URL}/contests/${fields[indx]._id}`, {
+      const res = await fetch(`${BACKEND_URL}/api/contests/${fields[indx]._id}`, {
         method: "DELETE",
       });
       if (res.ok) {
@@ -76,7 +77,7 @@ const ActiveContests = () => {
   const submit = async (data: FieldValues) => {
     const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
-    const res = await fetch(`${BACKEND_URL}/contests`, {
+    const res = await fetch(`${BACKEND_URL}/api/contests`, {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
@@ -99,7 +100,7 @@ const ActiveContests = () => {
                 <TableHeader>
                   <TableRow>
                     <TableHead className="w-40">
-                      <div className="flex  items-center">
+                      <div className="flex items-center">
                         Contest ID <span className=" text-red-600 mx-2">*</span>{" "}
                         <Tooltip>
                           <TooltipTrigger>
@@ -177,11 +178,12 @@ const ActiveContests = () => {
                 ))}
               </TableBody>
             </Table>
-            <div className="h-2 w-full  border-b-border border-b" />
+            {fields.length != 0 && <Separator className="my-4 h-[1px]" />}
+
             <Button
-              className="mt-2 "
+              className="mt-2 mx-auto flex grow "
               type="button"
-              variant={"default"}
+              variant={"secondary"}
               onClick={addContest}
             >
               Add contest

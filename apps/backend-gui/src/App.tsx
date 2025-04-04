@@ -8,7 +8,7 @@ function App() {
   return (
     <>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-        <main className="flex flex-col gap-4">
+        <main className="flex flex-col gap-4 container mx-auto">
           <ModeToggle />
           <SessionBlock />
           <ActiveContests />
