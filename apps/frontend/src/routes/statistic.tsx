@@ -1,9 +1,6 @@
+import Stats from "@/pages/Stats";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/statistic")({
-  component: Statistic,
+  component: Stats,
 });
-
-function Statistic() {
-  return <div className="p-2">Hello from Statistic!</div>;
-}
