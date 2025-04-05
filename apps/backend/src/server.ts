@@ -14,6 +14,7 @@ import swaggerConfig, { swaggerUiConfig } from "./plugins/swaggerConfig.js";
 import fastifyEnvConfig from "./plugins/fastifyEnvConfig.js";
 import ratingRoute from "./routes/ratingRoute.js";
 import loggerConfig from "./plugins/loggerConfig.js";
+import statisticRoutes from "./routes/statisticRoutes.js";
 
 const DEFAULT_PORT = 3000;
 dotenv.config();
@@ -37,6 +38,7 @@ fastify.register(contestRoutes);
 fastify.register(sessionRotes);
 fastify.register(logRoutes);
 fastify.register(ratingRoute);
+fastify.register(statisticRoutes);
 
 fastify.register(contestsCheck);
 

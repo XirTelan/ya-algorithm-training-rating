@@ -1,31 +1,29 @@
+import { ContestDTO } from "../../types";
 import Rating from "../models/Rating";
 import { logger } from "../server";
 import contestService from "./contestService";
 
-async function getStatistic() {
-  const [contestUserCount, contestSumByTaskTries] = await Promise.all([
-    getCountWithMaxTasksForEachContest(),
-    getUserCountByTotalTasksAndTotalTries(),
-  ]);
-  return { contestUserCount, contestSumByTaskTries };
-}
 
-async function getCountWithMaxTasksForEachContest() {
-  const contests = await contestService.getContests();
-  const queue: Promise<unknown>[] = [];
-  contests.forEach((contest) => {
-    queue.push(
-      Rating.countDocuments({
-        contestId: contest.contestId,
-        tasks: contest.stats.length,
-      })
-    );
-  });
-  const queryRes = await Promise.all(queue);
-  const dataRes = contests.map((contest, indx) => {
-    return { id: contest.contestId, count: queryRes[indx] };
-  });
-  return dataRes;
+async function getCountWithMaxTasksForEachContest(contests: ContestDTO[]) {
+  try {
+    const queue: Promise<unknown>[] = [];
+    contests.forEach((contest) => {
+      queue.push(
+        Rating.countDocuments({
+          contestId: contest.contestId,
+          tasks: contest.stats.length,
+        })
+      );
+    });
+    const queryRes = await Promise.all(queue);
+    const dataRes = contests.map((contest, indx) => {
+      return { id: contest.contestId, count: queryRes[indx] };
+    });
+    return dataRes;
+  } catch (error) {
+    logger.error(error, "Error counting task stat for contests:");
+    return undefined;
+  }
 }
 
 async function getUserCountByTotalTasksAndTotalTries() {
@@ -72,5 +70,6 @@ async function getUserCountByTotalTasksAndTotalTries() {
 }
 
 export default {
-  getStatistic,
+  getCountWithMaxTasksForEachContest,
+  getUserCountByTotalTasksAndTotalTries,
 };
