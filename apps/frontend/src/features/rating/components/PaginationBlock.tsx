@@ -5,16 +5,8 @@ import {
   PaginationItem,
 } from "@repo/ui/pagination";
 import { ChevronLeft, ChevronRight, MoreHorizontalIcon } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
-import {
-  Link,
-  useLocation,
-  useNavigate,
-  useSearch,
-} from "@tanstack/react-router";
-import { Route } from "@/routes/index";
+
 import usePagination from "../hooks/usePagination";
-import { useQuery } from "@tanstack/react-query";
 
 export default function PaginationBlock({ pageCount }: { pageCount: number }) {
   const { page, activeIndex, paginationPages, setActiveIndex, navigateToPage } =
@@ -33,16 +25,18 @@ export default function PaginationBlock({ pageCount }: { pageCount: number }) {
             Previous
           </Button>
         </PaginationItem>
-        <PaginationItem>
-          <Button
-            variant={activeIndex === 1 ? "outline" : "ghost"}
-            onClick={() => {
-              navigateToPage(1);
-            }}
-          >
-            {1}
-          </Button>
-        </PaginationItem>
+        {pageCount > 5 && (
+          <PaginationItem>
+            <Button
+              variant={activeIndex === 1 ? "outline" : "ghost"}
+              onClick={() => {
+                navigateToPage(1);
+              }}
+            >
+              {1}
+            </Button>
+          </PaginationItem>
+        )}
       </PaginationContent>
       <PaginationContent>
         {activeIndex > 4 && (
@@ -82,14 +76,16 @@ export default function PaginationBlock({ pageCount }: { pageCount: number }) {
         )}
       </PaginationContent>
       <PaginationContent>
-        <PaginationItem>
-          <Button
-            variant={activeIndex === pageCount ? "outline" : "ghost"}
-            onClick={() => navigateToPage(pageCount)}
-          >
-            {pageCount}
-          </Button>
-        </PaginationItem>
+        {pageCount > 5 && (
+          <PaginationItem>
+            <Button
+              variant={activeIndex === pageCount ? "outline" : "ghost"}
+              onClick={() => navigateToPage(pageCount)}
+            >
+              {pageCount}
+            </Button>
+          </PaginationItem>
+        )}
         <PaginationItem>
           <Button
             disabled={page === pageCount}

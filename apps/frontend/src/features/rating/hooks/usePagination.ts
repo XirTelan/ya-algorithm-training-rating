@@ -17,14 +17,14 @@ export default function usePagination(pageCount: number) {
 
     let first = Math.max(2, activeIndex - 2);
     if (activeIndex >= pageCount - 4) {
-      first = pageCount - 5;
+      first = Math.max(1, pageCount - 5);
     }
 
     const activeIndexLow = Math.max(activeIndex, first);
 
     let last = Math.min(activeIndexLow + 2, pageCount - 1);
     if (activeIndex <= 5) {
-      last = first + 4;
+      last = Math.min(first + 4, pageCount);
     }
     let generate: number[] = [];
     if (last - first > 0) {
@@ -38,6 +38,7 @@ export default function usePagination(pageCount: number) {
   const navigateToPage = useCallback((newPage: number) => {
     navigate({
       search: (prev) => ({
+        ...prev,
         page: clamp(newPage, 1, pageCount),
       }),
     });
