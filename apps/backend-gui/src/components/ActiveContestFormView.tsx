@@ -1,11 +1,7 @@
-import { useEffect } from "react";
-import { useForm, FieldValues, useFieldArray } from "react-hook-form";
-
-import { EllipsisVertical, Info, X } from "lucide-react";
-import { Contest } from "@/types";
 import { Separator } from "@repo/ui/separator";
+import { Contest } from "@/types";
+
 import { Button } from "@repo/ui/button";
-import { toast } from "@repo/ui";
 import { Card, CardContent, CardFooter } from "@repo/ui/card";
 import { Input } from "@repo/ui/input";
 import {
@@ -22,77 +18,30 @@ import {
   TooltipTrigger,
   TooltipContent,
 } from "@repo/ui/tooltip";
+import { EllipsisVertical, Info, X } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { ContestForm } from "@/containers/ActiveContests";
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+type FormViewProps = {
+  fields: Contest[];
+  register: ReturnType<
+    typeof useForm<ContestForm>
+  >["register"];
+  onAdd: () => void;
+  onDelete: (index: number) => void;
+  onSubmit: (e?: React.BaseSyntheticEvent) => void;
+};
 
-const ActiveContests = () => {
-  const { register, control, handleSubmit, reset } = useForm<{
-    contests: Contest[];
-    delete?: string[];
-  }>();
-
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: "contests",
-  });
-
-  useEffect(() => {
-    async function loadData() {
-      const responce = await fetch(`${BACKEND_URL}/api/contests`);
-      if (responce.ok) {
-        const result = await responce.json();
-        if (result.success) {
-          reset({ contests: result.data });
-        }
-      }
-    }
-    loadData();
-  }, [reset]);
-
-  const addContest = () => {
-    append({
-      contestId: "",
-      contestTitle: `Contest_${fields.length}`,
-      autoUpdate: 0,
-      attempts: "",
-      status: "",
-      date: undefined,
-    });
-  };
-
-  const deleteContest = async (indx: number) => {
-    if ("_id" in fields[indx]) {
-      const res = await fetch(`${BACKEND_URL}/api/contests/${fields[indx]._id}`, {
-        method: "DELETE",
-      });
-      if (res.ok) {
-        toast("Delete Contest", {
-          description: "success",
-        });
-      }
-    }
-    remove(indx);
-  };
-
-  const submit = async (data: FieldValues) => {
-    const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
-
-    const res = await fetch(`${BACKEND_URL}/api/contests`, {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    if (res.ok) {
-      toast("Contest Data", {
-        description: "success update",
-      });
-    }
-  };
+export default function ActiveContestFormView({
+  fields,
+  register,
+  onAdd,
+  onSubmit,
+  onDelete,
+}: FormViewProps) {
   return (
     <div>
-      <form onSubmit={handleSubmit(submit)}>
+      <form onSubmit={onSubmit}>
         <Card>
           <CardContent>
             <Table className="mt-4  ">
@@ -169,7 +118,7 @@ const ActiveContests = () => {
                         type="button"
                         size={"icon"}
                         variant={"destructive"}
-                        onClick={() => deleteContest(indx)}
+                        onClick={() => onDelete(indx)}
                       >
                         <X />
                       </Button>
@@ -184,7 +133,7 @@ const ActiveContests = () => {
               className="mt-2 mx-auto flex grow "
               type="button"
               variant={"secondary"}
-              onClick={addContest}
+              onClick={onAdd}
             >
               Add contest
             </Button>
@@ -196,6 +145,4 @@ const ActiveContests = () => {
       </form>
     </div>
   );
-};
-
-export default ActiveContests;
+}
