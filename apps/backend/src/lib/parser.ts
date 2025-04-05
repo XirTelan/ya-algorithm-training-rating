@@ -10,6 +10,22 @@ import ratingService from "../services/ratingService.js";
 
 const CONTEST_URL = `https://contest.yandex.ru/contest`;
 
+async function fetchContestPage(
+  contestId: string,
+  page: number,
+  sessionId: string
+) {
+  const url = `${CONTEST_URL}/${contestId}/standings/?p=${page}`;
+  const responce = await fetch(url, {
+    headers: {
+      cookie: `Session_id=${sessionId}`,
+    },
+    cache: "no-cache",
+  });
+
+  return await responce.text();
+}
+
 export async function fetchLeaderbord(contestId: string) {
   const session = (await sessionService.getSession()) as ConfigType;
   if (!session?.value) return { success: false };
@@ -21,7 +37,7 @@ export async function fetchLeaderbord(contestId: string) {
   const contestInfo = await getContestInfo(contestId, sessionId);
 
   if (!contestInfo) {
-    await logService.addLogEntry(`Contest Info null`, "error");
+    logService.addLogEntry(`Contest Info null`, "error");
     logger.error(`Contest Info null`);
     return;
   }
@@ -30,7 +46,7 @@ export async function fetchLeaderbord(contestId: string) {
 
   for (let i = 1; i <= contestInfo.lastPage; i++) {
     queries.push(
-      fetchPage(contestId, i, sessionId, constestData?.attempts ?? "")
+      parsePage(contestId, i, sessionId, constestData?.attempts ?? "")
     );
   }
   const res = await Promise.all(queries);
@@ -48,14 +64,7 @@ export async function fetchLeaderbord(contestId: string) {
 }
 
 export async function getContestInfo(contestId: string, sessionId: string) {
-  const url = `${CONTEST_URL}/${contestId}/standings/?p=1}`;
-  const responce = await fetch(url, {
-    headers: {
-      cookie: `Session_id=${sessionId}`,
-    },
-    cache: "no-cache",
-  });
-  const $ = cheerio.load(await responce.text());
+  const $ = cheerio.load(await fetchContestPage(contestId, 1, sessionId));
   const $pager = $(".pager>a")
     .toArray()
     .map((x) => {
@@ -86,20 +95,13 @@ export async function getContestInfo(contestId: string, sessionId: string) {
   return result;
 }
 
-async function fetchPage(
+async function parsePage(
   contestId: string,
   page: number,
   sessionId: string,
   attempts: string
 ) {
-  const url = `${CONTEST_URL}/${contestId}/standings/?p=${page}`;
-  const responce = await fetch(url, {
-    headers: {
-      cookie: `Session_id=${sessionId}`,
-    },
-    cache: "no-cache",
-  });
-  const $ = cheerio.load(await responce.text());
+  const $ = cheerio.load(await fetchContestPage(contestId, page, sessionId));
 
   const tasks = attempts
     .split(",")
