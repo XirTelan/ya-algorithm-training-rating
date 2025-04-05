@@ -1,4 +1,5 @@
-import mongoose from "mongoose";
+import mongoose, { Model } from "mongoose";
+import { ContestDTO } from "../../types";
 const ContestStatsSchema = new mongoose.Schema(
   {
     task: String,
@@ -8,7 +9,7 @@ const ContestStatsSchema = new mongoose.Schema(
   { _id: false }
 );
 
-const ContestSchema = new mongoose.Schema(
+const ContestSchema = new mongoose.Schema<ContestDTO>(
   {
     contestTitle: String,
     contestId: {
@@ -26,7 +27,7 @@ const ContestSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
-const Contest =
+const Contest: Model<ContestDTO> =
   mongoose.models.Contest || mongoose.model("Contest", ContestSchema);
 
 export default Contest;

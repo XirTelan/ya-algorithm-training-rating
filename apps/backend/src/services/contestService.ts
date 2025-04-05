@@ -3,19 +3,33 @@ import { ContestDTO } from "../../types.js";
 import { logger } from "../server.js";
 
 async function getContests(): Promise<ContestDTO[]> {
-  const res = (await Contest.find(
-    {},
-    { updatedAt: 0, "stats._id": 0 }
-  ).lean()) as unknown as ContestDTO[];
-  return res;
+  try {
+    const res = (await Contest.find(
+      {},
+      { updatedAt: 0, "stats._id": 0 }
+    ).lean()) as unknown as ContestDTO[];
+    return res;
+  } catch (error) {
+    logger.error(error, "contestService/getContests");
+    return [];
+  }
 }
 async function getContestById(id: string): Promise<ContestDTO | null> {
-  const res = await Contest.findOne({ contestId: id }).lean();
-  return res as ContestDTO | null;
+  try {
+    const res = await Contest.findOne({ contestId: id }).lean();
+    return res as ContestDTO | null;
+  } catch (error) {
+    logger.error(error, `contestService/getContestById with ID: ${id}`);
+    return null;
+  }
 }
 async function deleteContest(id: string) {
-  const res = await Contest.findByIdAndDelete(id);
-  return res;
+  try {
+    const res = await Contest.findByIdAndDelete(id);
+    return res;
+  } catch (error) {
+    logger.error(error, `contestService/deleteContest with ID: ${id}`);
+  }
 }
 async function updateContestById(id: string, data: Partial<ContestDTO>) {
   await Contest.findOneAndUpdate(

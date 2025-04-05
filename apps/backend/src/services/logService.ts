@@ -13,6 +13,9 @@ async function addLogEntry(message: string, type: string) {
     };
   } catch (error) {
     console.error(error);
+    return {
+      success: false,
+    };
   }
 }
 
@@ -30,6 +33,10 @@ async function getLogs(time: number | string, type: string) {
     };
   } catch (error) {
     console.error(error);
+    return {
+      success: false,
+      data: [],
+    };
   }
 }
 

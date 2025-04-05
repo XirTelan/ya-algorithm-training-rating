@@ -1,6 +1,7 @@
-import mongoose from "mongoose";
+import mongoose, { Model } from "mongoose";
+import { LogDTO } from "../../types";
 
-const LogSchema = new mongoose.Schema(
+const LogSchema = new mongoose.Schema<LogDTO>(
   {
     message: String,
     type: String,
@@ -9,6 +10,7 @@ const LogSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
-const Log = mongoose.models.Log || mongoose.model("Log", LogSchema);
+const Log: Model<LogDTO> =
+  mongoose.models.Log || mongoose.model("Log", LogSchema);
 
 export default Log;

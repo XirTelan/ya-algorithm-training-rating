@@ -1,3 +1,5 @@
+import { Date } from "mongoose";
+
 export type ContestDTO = {
   _id?: string;
   contestTitle: string;
@@ -14,13 +16,13 @@ export type ContestDTO = {
 };
 
 export type RatingDTO = {
-  userId: String;
-  contestId: String;
-  tasks: Number;
-  fine: Number;
-  tries: Number;
-  createdAt: Date;
-  updatedAt: Date;
+  userId: string;
+  contestId: string;
+  tasks: number;
+  fine: number;
+  tries: number;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type ConfigType = {
@@ -41,4 +43,11 @@ export type ContestData = {
   totalFine: number;
   totalTries: number;
   byContest: { [key: string]: unknown }[];
+};
+
+export type LogDTO = {
+  message: string;
+  type: string;
+  createdAt: string;
+  updatedAt: string;
 };

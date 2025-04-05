@@ -1,13 +1,15 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import contestService from "../services/contestService.js";
 import { ContestDTO } from "../../types";
+import { logger } from "../server.js";
 
 export async function getContests(_req: FastifyRequest, reply: FastifyReply) {
   try {
     const res = await contestService.getContests();
-    reply.send({ success: true, data: res });
+    reply.code(200).send(res);
   } catch (error) {
-    reply.code(500).send({ success: false, data: [] });
+    logger.error(error, "contestContoller/getContest");
+    reply.code(500).send([]);
   }
 }
 
