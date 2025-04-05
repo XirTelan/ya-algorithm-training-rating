@@ -1,12 +1,14 @@
-import { ContestData, RatingDTO } from "@/types";
+import {  RatingDTO, RatingSearch } from "@/types";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
-async function getRating(page: number, limit: number = 50): Promise<RatingDTO> {
-  console.log("wtf", BACKEND_URL);
-  const data = await fetch(
-    `${BACKEND_URL}/api/rating?page=${page}&limit=${limit}`
-  );
+async function getRating(searchProps: RatingSearch): Promise<RatingDTO> {
+  const params = new URLSearchParams({
+    page: String(searchProps.page),
+    limit: String(searchProps.limit),
+    search: searchProps.search ?? "",
+  });
+  const data = await fetch(`${BACKEND_URL}/api/rating?${params}`);
   return await data.json();
 }
 
