@@ -11,10 +11,17 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as StatusImport } from './routes/status'
 import { Route as StatisticImport } from './routes/statistic'
 import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
+
+const StatusRoute = StatusImport.update({
+  id: '/status',
+  path: '/status',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const StatisticRoute = StatisticImport.update({
   id: '/statistic',
@@ -46,6 +53,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StatisticImport
       parentRoute: typeof rootRoute
     }
+    '/status': {
+      id: '/status'
+      path: '/status'
+      fullPath: '/status'
+      preLoaderRoute: typeof StatusImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -54,36 +68,41 @@ declare module '@tanstack/react-router' {
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/statistic': typeof StatisticRoute
+  '/status': typeof StatusRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/statistic': typeof StatisticRoute
+  '/status': typeof StatusRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/statistic': typeof StatisticRoute
+  '/status': typeof StatusRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/statistic'
+  fullPaths: '/' | '/statistic' | '/status'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/statistic'
-  id: '__root__' | '/' | '/statistic'
+  to: '/' | '/statistic' | '/status'
+  id: '__root__' | '/' | '/statistic' | '/status'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   StatisticRoute: typeof StatisticRoute
+  StatusRoute: typeof StatusRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   StatisticRoute: StatisticRoute,
+  StatusRoute: StatusRoute,
 }
 
 export const routeTree = rootRoute
@@ -97,7 +116,8 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/statistic"
+        "/statistic",
+        "/status"
       ]
     },
     "/": {
@@ -105,6 +125,9 @@ export const routeTree = rootRoute
     },
     "/statistic": {
       "filePath": "statistic.tsx"
+    },
+    "/status": {
+      "filePath": "status.tsx"
     }
   }
 }

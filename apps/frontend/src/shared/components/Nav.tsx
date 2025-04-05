@@ -10,6 +10,9 @@ export default function Nav() {
       <Link to="/statistic" className="[&.active]:font-bold">
         Статистика
       </Link>
+      <Link to="/status" className="[&.active]:font-bold">
+        Статус
+      </Link>
     </div>
   );
 }
