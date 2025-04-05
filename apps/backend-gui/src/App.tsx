@@ -1,8 +1,8 @@
-import ActiveContests from "./components/ActiveContests";
 import SessionBlock from "./components/SessionBlock";
 import Logger from "./components/Logger";
 import Toaster from "@repo/ui/sonner";
 import { ThemeProvider, ModeToggle } from "@repo/ui";
+import ActiveContests from "./containers/ActiveContests";
 
 function App() {
   return (

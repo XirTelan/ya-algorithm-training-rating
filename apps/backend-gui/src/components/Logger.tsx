@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { Info, ServerCrash, TriangleAlert } from "lucide-react";
+import { Info, PackageOpen, ServerCrash, TriangleAlert } from "lucide-react";
 import { Card, CardContent } from "@repo/ui/card";
 import { Label } from "@repo/ui/label";
 import {
@@ -18,6 +18,7 @@ import {
   TableBody,
   TableCell,
 } from "@repo/ui/table";
+import { Separator } from "@repo/ui/separator";
 
 type LogType = "all" | "info" | "error" | "warning";
 
@@ -101,10 +102,15 @@ const Logger = () => {
               </SelectContent>
             </Select>
           </div>
+
           {logs.length == 0 ? (
-            <p className="flex text-center content-center w-full mt-4 ">
-              Logs are empty
-            </p>
+            <>
+              <Separator className="h-[1px] mt-4" />
+              <div className="flex justify-center gap-2 text-secondary-foreground  w-full content-center mt-4 ">
+                <PackageOpen />
+                <p>Logs are empty</p>
+              </div>
+            </>
           ) : (
             <Table className="mt-4">
               <TableHeader>
