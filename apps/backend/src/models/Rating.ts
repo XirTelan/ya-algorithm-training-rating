@@ -1,6 +1,7 @@
-import mongoose from "mongoose";
+import mongoose, { Model } from "mongoose";
+import { RatingDTO } from "../../types";
 
-const RatingSchema = new mongoose.Schema(
+const RatingSchema = new mongoose.Schema<RatingDTO>(
   {
     userId: String,
     contestId: String,
@@ -14,6 +15,8 @@ const RatingSchema = new mongoose.Schema(
 );
 
 RatingSchema.index({ userId: 1, contestId: 1 }, { unique: true });
-const Rating = mongoose.models.Rating || mongoose.model("Rating", RatingSchema);
+RatingSchema.index({ totalTasks: -1, totalTries: 1, totalFine: 1 });
+const Rating: Model<RatingDTO> =
+  mongoose.models.Rating || mongoose.model("Rating", RatingSchema);
 
 export default Rating;

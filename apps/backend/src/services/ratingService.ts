@@ -1,7 +1,13 @@
 import Rating from "../models/Rating.js";
-import { ContestData, DataEntry } from "../../types";
+import { ContestData, DataEntry, RatingDTO } from "../../types";
 import logService from "./logService.js";
 import { logger } from "../server.js";
+import { Aggregate } from "mongoose";
+
+type RatingResponse = {
+  items: ContestData[];
+  totalCount: number;
+};
 
 async function updateRating(data: DataEntry[], contestId: string) {
   logger.info("updateRating: entries count:", data.length);
@@ -30,28 +36,98 @@ async function updateRating(data: DataEntry[], contestId: string) {
   const res = await Promise.all(queue);
 }
 
-async function buildRaiting(page: number, limit: number) {
-  const skip = page * limit;
+async function filterByUserSearch(search: string): Promise<RatingResponse> {
+  const match = await Rating.aggregate([
+    {
+      $match: {
+        userId: {
+          $regex: search,
+          $options: "i",
+        },
+      },
+    },
+    {
+      $group: {
+        _id: "$userId",
+      },
+    },
+  ]);
+  if (match.length == 0) return { items: [], totalCount: 0 };
+  const matchSet = new Set(match.map((obj) => obj._id));
+
+  const allUsers = await Rating.aggregate<ContestData>([
+    {
+      $group: {
+        _id: "$userId",
+        totalTasks: { $sum: "$tasks" },
+        totalFine: { $sum: "$fine" },
+        totalTries: { $sum: "$tries" },
+
+        byContest: {
+          $push: {
+            k: "$contestId",
+            v: {
+              tasks: "$tasks",
+              fine: "$fine",
+              tries: "$tries",
+              createdAt: "$createdAt",
+              updatedAt: "$updatedAt",
+            },
+          },
+        },
+      },
+    },
+
+    {
+      $sort: { totalTasks: -1, totalTries: 1, totalFine: 1 },
+    },
+  ]);
+  let index = 0;
+  const results: ContestData[] = [];
+  allUsers.forEach((user) => {
+    index++;
+    if (!matchSet.has(user._id)) return;
+    results.push({ ...user, position: index });
+  });
+  return {
+    items: results,
+    totalCount: results.length,
+  };
+}
+
+async function buildRaiting(
+  page: number,
+  limit: number
+): Promise<RatingResponse> {
+  const skip = page * limit - limit;
+
   const data = await getUsersTotalAndByContest(skip, limit);
   const raiting = data.map((user, indx) => {
     //cant count inside aggretion due sort condition. $documentCount and $rank only for single sort condition
-    user.position = skip + indx + 1;
     return {
       ...user,
+      position: skip + indx + 1,
     };
   });
-
-  const totalUsers = await Rating.aggregate([
-    { $group: { _id: "$userId" } },
-    { $count: "count" },
-  ]);
-  logger.info(totalUsers);
-  const totalCount = totalUsers[0]?.count || 0;
-
+  const totalCount = await getUsersCount();
   return {
     items: raiting,
     totalCount,
   };
+}
+
+async function getUsersCount() {
+  try {
+    const totalUsers = await Rating.aggregate([
+      { $group: { _id: "$userId" } },
+      { $count: "count" },
+    ]);
+    const totalCount = totalUsers[0]?.count || 0;
+    return totalCount;
+  } catch (error) {
+    logger.error(error, "getUsersCount");
+    return 0;
+  }
 }
 
 async function getUsersTotalAndByContest(
@@ -59,7 +135,7 @@ async function getUsersTotalAndByContest(
   limit: number = 50
 ): Promise<ContestData[]> {
   try {
-    const results: ContestData[] = await Rating.aggregate([
+    const results = await Rating.aggregate([
       {
         $group: {
           _id: "$userId",
@@ -140,7 +216,9 @@ async function getUsersTotalAndByContest(
 }
 
 export default {
+  filterByUserSearch,
   buildRaiting,
   updateRating,
+  getUsersCount,
   getUsersTotalAndByContest,
 };
