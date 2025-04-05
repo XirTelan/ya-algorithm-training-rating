@@ -11,7 +11,7 @@ async function updateSession(newValue: string) {
     if (!res) {
       const newEntry = new Config({
         name: "sessionId",
-        value: "newValue",
+        value: newValue,
       });
       await newEntry.save();
     } else {
