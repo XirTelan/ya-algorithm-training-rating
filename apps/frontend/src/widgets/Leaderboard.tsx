@@ -7,24 +7,20 @@ import { Route } from "@/routes";
 import React from "react";
 
 export default function Leaderboard() {
-  const { page, limit } = Route.useSearch();
+  const searchProps = Route.useSearch();
 
-  const { data, isPending, isError } = useGetRating(page, limit);
-  if (isPending || !data) return;
+  const { data } = useGetRating(searchProps);
 
-  const pageCount = Math.floor(data.totalCount / limit);
+  const pageCount = Math.ceil(data.totalCount / searchProps.limit);
 
   return (
-    <div>
-      <section>
-        <FilterBlock />
-      </section>
+    <>
       <section>
         <RatingTable data={data} />
       </section>
       <section className="my-2">
         <PaginationBlock pageCount={pageCount} />
       </section>
-    </div>
+    </>
   );
 }
