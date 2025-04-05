@@ -1,10 +1,42 @@
+import { Route } from "@/routes";
+import useDebounce from "@/shared/hooks/useDebounce";
 import { Button } from "@repo/ui/button";
 import { Input } from "@repo/ui/input";
 import { Label } from "@repo/ui/label";
 import { Popover, PopoverTrigger, PopoverContent } from "@repo/ui/popover";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@repo/ui/select";
+import { useNavigate, useSearch } from "@tanstack/react-router";
 import { FilterIcon, Search } from "lucide-react";
+import { useEffect, useState } from "react";
 
 const FilterBlock = () => {
+  const { search: initValue, limit } = Route.useSearch();
+  const [search, setSearch] = useState(initValue ?? "");
+  const [currentLimit, setCurrentLimit] = useState(String(limit));
+  const debouncedValue = useDebounce(search);
+
+  const navigate = useNavigate({ from: Route.fullPath });
+
+  useEffect(() => {
+    navigate({
+      search: (prev) => ({
+        ...prev,
+        search: debouncedValue,
+        limit: Number(currentLimit),
+      }),
+    });
+  }, [debouncedValue, currentLimit]);
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value);
+  };
+
   return (
     <div className="my-2 flex  gap-1">
       <div className="relative flex grow">
@@ -12,7 +44,7 @@ const FilterBlock = () => {
           className="absolute right-0 m-auto bottom-0 top-0 me-2"
           size={16}
         />
-        <Input placeholder="ФИО" />
+        <Input value={search} onChange={handleSearch} placeholder="ФИО" />
       </div>
       <Popover>
         <PopoverTrigger asChild>
@@ -20,52 +52,29 @@ const FilterBlock = () => {
             <FilterIcon />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-80 p-4">
+        <PopoverContent className="w-64 p-4">
           <div className="grid gap-4">
             <div className="space-y-2">
-              <h4 className="font-medium leading-none">Dimensions</h4>
-              <p className="text-sm text-muted-foreground">
-                Set the dimensions for the layer.
-              </p>
+              <h4 className="font-medium leading-none">Filters</h4>
             </div>
             <div className="grid gap-2">
               <div className="grid grid-cols-3 items-center gap-4">
-                <Label htmlFor="width">Width</Label>
-                <Input
-                  id="width"
-                  defaultValue="100%"
-                  className="col-span-2 h-8"
-                />
-              </div>
-              <div className="grid grid-cols-3 items-center gap-4">
-                <Label htmlFor="maxWidth">Max. width</Label>
-                <Input
-                  id="maxWidth"
-                  defaultValue="300px"
-                  className="col-span-2 h-8"
-                />
-              </div>
-              <div className="grid grid-cols-3 items-center gap-4">
-                <Label htmlFor="height">Height</Label>
-                <Input
-                  id="height"
-                  defaultValue="25px"
-                  className="col-span-2 h-8"
-                />
-              </div>
-              <div className="grid grid-cols-3 items-center gap-4">
-                <Label htmlFor="maxHeight">Max. height</Label>
-                <Input
-                  id="maxHeight"
-                  defaultValue="none"
-                  className="col-span-2 h-8"
-                />
+                <Label>Page Limit</Label>
+                <Select
+                  value={currentLimit}
+                  onValueChange={(value) => setCurrentLimit(value)}
+                >
+                  <SelectTrigger className="w-[120px]">
+                    <SelectValue placeholder=" Limit" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="20">20</SelectItem>
+                    <SelectItem value="50">50</SelectItem>
+                    <SelectItem value="100">100</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
             </div>
-          </div>
-          <div className="mt-2">
-            <Button variant={"secondary"}>Reset</Button>
-            <Button>Apply</Button>
           </div>
         </PopoverContent>
       </Popover>
