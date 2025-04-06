@@ -9,7 +9,13 @@ export type ContestData = {
   totalTasks: number;
   totalFine: number;
   totalTries: number;
-  byContest: { [key: string]: unknown }[];
+  byContest: {
+    [key: string]: { [key: string]: string | number } & {
+      tasks: number;
+      tries: number;
+      fine: number;
+    };
+  };
 };
 
 export type RatingDTO = {
@@ -34,8 +40,10 @@ export type ContestDTO = {
 
 export type StatisticContest = {};
 
-export type StatisticSummary = {
+export type StatisticTaskAttempts = {
   totalTasks: number;
   totalTries: number;
   userCount: number;
-}[];
+};
+
+export type StatisticTaskTotal = Omit<StatisticTaskAttempts, "totalTries">;
