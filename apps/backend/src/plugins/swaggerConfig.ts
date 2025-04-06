@@ -16,18 +16,17 @@ const swaggerConfig: SwaggerOptions = {
       },
     ],
     tags: [
-      { name: "user", description: "User related end-points" },
-      { name: "code", description: "Code related end-points" },
+      { name: "rating", description: "Rating related end-points. " },
+      { name: "statistic", description: "Statistic related end-points" },
+      { name: "contests", description: "Contest related end-points" },
+      { name: "session", description: "Session  related end-points" },
+      { name: "logs", description: "Log system related end-points" },
     ],
 
-    components: {
-      securitySchemes: {
-        apiKey: {
-          type: "apiKey",
-          name: "apiKey",
-          in: "header",
-        },
-      },
+
+    externalDocs: {
+      url: "https://github.com/XirTelan/ya-algorithm-training-rating/",
+      description: "Find more info here",
     },
   },
 };
@@ -41,7 +40,7 @@ export const swaggerUiConfig: FastifySwaggerUiOptions = {
   },
   staticCSP: true,
   transformStaticCSP: (header) => header,
-  transformSpecification: (swaggerObject, request, reply) => {
+  transformSpecification: (swaggerObject) => {
     return swaggerObject;
   },
   transformSpecificationClone: true,
