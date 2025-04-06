@@ -13,7 +13,7 @@ export default function PaginationEllipsis({
 }: PaginationEllipsisProps) {
   return (
     <PaginationItem
-      className="hidden xs:block"
+      className="hidden sm:block"
       aria-label={`Jump to page ${pageNum}`}
     >
       <Button data-page={pageNum} variant={"ghost"} onClick={onClick}>

@@ -7,14 +7,14 @@ import { Suspense } from "react";
 
 export default function Home() {
   return (
-    <div className="p-2  ">
+    <>
       <section>
         <FilterBlock />
       </section>
       <Suspense fallback={<SkeletonTable />}>
         <Leaderboard />
       </Suspense>
-    </div>
+    </>
   );
 }
 

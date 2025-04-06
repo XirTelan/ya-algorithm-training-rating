@@ -8,7 +8,7 @@ export default function RootLayout() {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <Header />
-      <main className="flex flex-1 flex-col  gap-4 container mx-auto">
+      <main className="flex flex-1 flex-col  gap-4 container mx-auto p-2">
         <Outlet />
       </main>
       <Toaster />

@@ -7,7 +7,7 @@ import React, { Suspense } from "react";
 
 export default function Stats() {
   return (
-    <div>
+    <>
       <Suspense fallback={<SkeletonBlock />}>
         <SummaryByTasks />
       </Suspense>
@@ -19,6 +19,6 @@ export default function Stats() {
       <Suspense fallback={<SkeletonBlock />}>
         <SummaryByContest />
       </Suspense>
-    </div>
+    </>
   );
 }
