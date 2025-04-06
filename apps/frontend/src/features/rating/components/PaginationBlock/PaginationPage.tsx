@@ -6,15 +6,17 @@ type PaginationPageProps = {
   pageNum: number;
   currentPage: number;
   onClick: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  itemProps?: Partial<React.ComponentProps<"li">>;
 };
 
 export default function PaginationPage({
   pageNum,
   currentPage,
   onClick,
+  itemProps,
 }: PaginationPageProps) {
   return (
-    <PaginationItem>
+    <PaginationItem {...itemProps}>
       <Button
         aria-current={pageNum === currentPage ? "page" : undefined}
         data-page={pageNum}

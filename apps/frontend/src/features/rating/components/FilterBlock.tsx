@@ -55,11 +55,11 @@ const FilterBlock = () => {
         <PopoverContent className="w-64 p-4">
           <div className="grid gap-4">
             <div className="space-y-2">
-              <h4 className="font-medium leading-none">Filters</h4>
+              <h4 className="font-medium leading-none">Фильтры</h4>
             </div>
             <div className="grid gap-2">
               <div className="grid grid-cols-3 items-center gap-4">
-                <Label>Page Limit</Label>
+                <Label>Размер страницы</Label>
                 <Select
                   value={currentLimit}
                   onValueChange={(value) => setCurrentLimit(value)}

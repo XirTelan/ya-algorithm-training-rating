@@ -42,7 +42,7 @@ export default function PaginationBlock({
   }
 
   return (
-    <Pagination className=" grow">
+    <Pagination className=" grow max-w-full overflow-auto">
       <PaginationContent>
         <PaginationItem>
           <Button
@@ -52,7 +52,7 @@ export default function PaginationBlock({
             onClick={handleClick}
           >
             <ChevronLeft />
-            Previous
+            <span className=" hidden sm:block ">Назад</span>
           </Button>
         </PaginationItem>
         {pageCount > paginationWindow && (
@@ -71,6 +71,7 @@ export default function PaginationBlock({
         )}
         {paginationPages.map((pageNum) => (
           <PaginationPage
+            itemProps={{ className: page != pageNum ? "hidden sm:block" : "" }}
             key={pageNum}
             pageNum={pageNum}
             currentPage={page}
@@ -98,7 +99,7 @@ export default function PaginationBlock({
             variant={"ghost"}
             onClick={handleClick}
           >
-            Next
+            <span className=" hidden sm:block ">Вперед</span>
             <ChevronRight />
           </Button>
         </PaginationItem>
