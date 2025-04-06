@@ -4,7 +4,7 @@ import PaginationBlock from "@/features/rating/components/PaginationBlock/Pagina
 import RatingTable from "@/features/rating/components/RatingTable";
 import { Route } from "@/routes";
 
-import React from "react";
+import React, { Suspense } from "react";
 
 export default function Leaderboard() {
   const searchProps = Route.useSearch();
@@ -16,7 +16,9 @@ export default function Leaderboard() {
   return (
     <>
       <section>
-        <RatingTable data={data} />
+        <Suspense>
+          <RatingTable data={data} />
+        </Suspense>
       </section>
       <section className="my-2">
         <PaginationBlock pageCount={pageCount} />
