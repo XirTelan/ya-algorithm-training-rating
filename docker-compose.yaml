@@ -6,6 +6,7 @@ services:
     env_file:
       - ./.env
     volumes:
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
       - mongodb:/data/db
 
   mongo-express:
@@ -17,6 +18,8 @@ services:
       ME_CONFIG_MONGODB_URL: ${ME_CONFIG_MONGODB_URL}
     depends_on:
       - mongodb
+    ports:
+      - 8081:8081
 
   backend:
     container_name: "backend"
