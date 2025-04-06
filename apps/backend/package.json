@@ -17,15 +17,24 @@
     "build": "tsc",
     "start": "node ./dist/server.js",
     "dev": "tsx watch src/server.ts",
-    "dev-debug": "tsx --inspect-brk  src/server.ts"
+    "dev-debug": "tsx --inspect-brk  src/server.ts",
+    "lint": "pnpm dlx eslint ."
   },
   "devDependencies": {
+    "@eslint/js": "^9.23.0",
     "@types/node": "^22.13.14",
+    "eslint": "^9.23.0",
+    "eslint-plugin-n": "^17.17.0",
+    "globals": "^16.0.0",
     "nodemon": "^3.1.9",
     "pino-pretty": "^13.0.0",
     "ts-node": "^10.9.2",
     "tslib": "^2.8.1",
     "tsx": "^4.19.3",
-    "typescript": "^5.8.2"
+    "typescript": "^5.8.2",
+    "typescript-eslint": "^8.28.0"
+  },
+  "engines": {
+    "node": ">=21.0.0"
   }
 }
