@@ -37,15 +37,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@repo/ui/card";
-import {
-  useGetStatisticContest,
-  useGetStatisticSummary,
-} from "@/features/statistic/api/useGetStatistic";
-import { Separator } from "@repo/ui/separator";
-import SummaryByContest from "@/features/statistic/components/SummaryByContest";
 
-const Statistic = () => {
-  const { data: summary } = useGetStatisticSummary();
+import { Separator } from "@repo/ui/separator";
+import { useGetStatisticTasks } from "@/features/statistic/api/useGetStatistic";
+
+const SummaryByTaskAttemptts = () => {
+  const { data: summary } = useGetStatisticTasks();
 
   const chartData = useMemo(
     () =>
@@ -58,18 +55,21 @@ const Statistic = () => {
     [summary]
   );
   const chartConfig = {
-    desktop: {
-      label: "Desktop",
+    default: {
+      label: "first",
       color: "hsl(var(--chart-2))",
     },
   } satisfies ChartConfig;
 
   return (
-    <div className="mt-4 flex flex-col items-center ">
+    <div className="flex flex-col items-center ">
       <Card className="flex w-full">
         <CardHeader>
           <CardTitle>Кол-во задач/попыток</CardTitle>
-          <CardDescription>January - June 2024</CardDescription>
+          <CardDescription>
+            Отображает лучшие 25 результатов. Полная таблица со всеми
+            результатами ниже
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <ChartContainer className="h-50 w-full" config={chartConfig}>
@@ -95,7 +95,7 @@ const Statistic = () => {
               <Bar
                 name={"Количество"}
                 dataKey="y"
-                fill="var(--color-desktop)"
+                fill="var(--color-default)"
                 radius={8}
               >
                 <LabelList
@@ -144,26 +144,8 @@ const Statistic = () => {
           </Accordion>
         </CardContent>
       </Card>
-      {/* 
-      {data.stats && data.stats.length > 0 && (
-        <BarChart
-          xAxis={[
-            {
-              scaleType: "band",
-              dataKey: "tasks",
-              label: "Кол-во задач",
-            },
-          ]}
-          dataset={data.stats ?? []}
-          series={[{ dataKey: "value", label: "Распределение по задачам" }]}
-          yAxis={[{ label: "Количество решивших" }]}
-          {...chartSetting}
-        />
-      )} */}
-      <Separator className="my-4" />
-      <SummaryByContest />
     </div>
   );
 };
 
-export default Statistic;
+export default SummaryByTaskAttemptts;

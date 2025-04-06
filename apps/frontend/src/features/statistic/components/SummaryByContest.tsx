@@ -17,8 +17,7 @@ import {
 import { ExternalLink } from "lucide-react";
 
 export default function SummaryByContest() {
-  const { data, isPending } = useGetContests();
-  if (!data || isPending) return;
+  const { data } = useGetContests();
   return (
     <Card className="w-full">
       <CardHeader>
@@ -27,7 +26,10 @@ export default function SummaryByContest() {
       <CardContent>
         <Accordion collapsible type="single">
           {data.map((contest) => (
-            <AccordionItem value={`${contest.contestId}`}>
+            <AccordionItem
+              key={contest.contestId}
+              value={`${contest.contestId}`}
+            >
               <AccordionTrigger
                 aria-controls={`panel-${contest._id}-content`}
                 id={`panel-${contest._id}-header`}
