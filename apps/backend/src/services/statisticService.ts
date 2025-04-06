@@ -3,30 +3,40 @@ import Rating from "../models/Rating";
 import { logger } from "../server";
 import contestService from "./contestService";
 
-
-async function getCountWithMaxTasksForEachContest(contests: ContestDTO[]) {
+async function getStatTaskTotal() {
   try {
-    const queue: Promise<unknown>[] = [];
-    contests.forEach((contest) => {
-      queue.push(
-        Rating.countDocuments({
-          contestId: contest.contestId,
-          tasks: contest.stats.length,
-        })
-      );
-    });
-    const queryRes = await Promise.all(queue);
-    const dataRes = contests.map((contest, indx) => {
-      return { id: contest.contestId, count: queryRes[indx] };
-    });
-    return dataRes;
+    const results = await Rating.aggregate([
+      {
+        $group: {
+          _id: "$userId",
+          totalTasks: { $sum: "$tasks" },
+        },
+      },
+      {
+        $group: {
+          _id: "$totalTasks",
+          count: { $sum: 1 },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          totalTasks: "$_id",
+          userCount: "$count",
+        },
+      },
+      {
+        $sort: { totalTasks: -1 },
+      },
+    ]);
+    return results;
   } catch (error) {
-    logger.error(error, "Error counting task stat for contests:");
+    logger.error(error, "Error getStatTaskTotal:");
     return undefined;
   }
 }
 
-async function getUserCountByTotalTasksAndTotalTries() {
+async function getStatTaskWithAttempts() {
   try {
     const results = await Rating.aggregate([
       {
@@ -70,6 +80,6 @@ async function getUserCountByTotalTasksAndTotalTries() {
 }
 
 export default {
-  getCountWithMaxTasksForEachContest,
-  getUserCountByTotalTasksAndTotalTries,
+  getStatTaskTotal,
+  getStatTaskWithAttempts,
 };
