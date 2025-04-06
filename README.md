@@ -18,8 +18,8 @@
 1. **apps**:
 
    - `frontend`: Клиентская часть с самой таблицей и статистикой
-   - `backend`:
-   - `backend-gui`: Клиент
+   - `backend`:  кхм.. бекэнд . 
+   - `backend-gui`: Клиент для бека. Настройка контестов
 
 2. **packages**:
    - `ui` Общие ui компоненты для frontend и backend-gui (shadncn/ui)
@@ -56,7 +56,19 @@ pnpm run dev
 pnpm run dev --filter=@yatr/backend
 ```
 
+Либо вручную заходя в соотв папку
+```
+cd app/backend
+pnpm run dev
+```
+
 ### Docker
+> [!WARNING]
+> docker-compose не полностю настроен
+
+./mongo-init.js
+
+Файл конфига для монго при старте. Создает пользователя через которого бек будет подключаться.
 
 сразу все запустить можно через `docker-compose`
 
@@ -78,10 +90,12 @@ docker build -t front-image -f ./apps/frontend/dockerfile .
 ```
 DATABASE_HOST=
 DATABASE_PORT=
+MONGO_BACKEND_USERNAME=
+MONGO_BACKEND_PASSWORD=
+MONGO_BACKEND_DATABASE=
 MONGO_INITDB_ROOT_USERNAME=
 MONGO_INITDB_ROOT_PASSWORD=
 MONGO_INITDB_DATABASE=
-SERVER_HOST=
 SERVER_PORT=
 ```
 
