@@ -1,21 +1,18 @@
 import { FastifyRequest, FastifyReply } from "fastify";
 import statisticService from "../services/statisticService";
-import contestService from "../services/contestService";
 
-export async function getTaskCountByContest(
-  _request: FastifyRequest,
+export async function getStatTaskWithAttempts(
+  request: FastifyRequest,
   reply: FastifyReply
 ) {
-  const contests = await contestService.getContests();
-  const res =
-    await statisticService.getCountWithMaxTasksForEachContest(contests);
-  reply.send(res);
+  const statistics = await statisticService.getStatTaskWithAttempts();
+  return reply.send(statistics);
 }
 
-export async function getSummaryByTaskAndAttempts(
-  _request: FastifyRequest,
+export async function getStatTaskTotal(
+  request: FastifyRequest,
   reply: FastifyReply
 ) {
-  const res = await statisticService.getUserCountByTotalTasksAndTotalTries();
-  reply.send(res);
+  const statistics = await statisticService.getStatTaskTotal();
+  return reply.send(statistics);
 }

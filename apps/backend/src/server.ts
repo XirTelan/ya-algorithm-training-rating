@@ -21,6 +21,7 @@ dotenv.config();
 
 const fastify = Fastify({
   exposeHeadRoutes: true,
+  ignoreTrailingSlash: true,
   logger: loggerConfig,
 });
 export const logger = fastify.log;

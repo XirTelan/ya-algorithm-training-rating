@@ -1,10 +1,10 @@
 import { FastifyInstance } from "fastify";
 import {
-  getSummaryByTaskAndAttempts,
-  getTaskCountByContest,
+  getStatTaskTotal,
+  getStatTaskWithAttempts,
 } from "../controllers/statisticController";
 
 export default async function statisticRoutes(fastify: FastifyInstance) {
-  fastify.get("/api/statistic/contest", getTaskCountByContest);
-  fastify.get("/api/statistic/summary", getSummaryByTaskAndAttempts);
+  fastify.get("/api/statistic/withattempts", getStatTaskWithAttempts);
+  fastify.get("/api/statistic/tasttotal", getStatTaskTotal);
 }

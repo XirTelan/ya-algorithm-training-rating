@@ -57,7 +57,7 @@ const Logger = () => {
       }
     };
     getLogs();
-    const update = setInterval(getLogs, 60_0000);
+    const update = setInterval(getLogs, 60_000);
     return () => clearInterval(update);
   }, [filter.time, filter.type]);
 

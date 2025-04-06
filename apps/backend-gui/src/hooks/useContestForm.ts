@@ -17,6 +17,8 @@ export default function useContestForm(
   remove: UseFieldArrayRemove,
   append: UseFieldArrayAppend<ContestForm>
 ) {
+
+  //[TASK-BGUI]
   useEffect(() => {
     async function loadData() {
       const responce = await fetch(`${BACKEND_URL}/api/contests`);

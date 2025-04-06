@@ -18,10 +18,12 @@ export async function updateContests(
   reply: FastifyReply
 ) {
   const body = request.body;
-  if (!("contests" in body)) reply.status(400);
+  if (!body || !("contests" in body)) {
+    return reply.code(400).send();
+  }
   const res = await contestService.updateContests(body.contests);
   if (res.success) reply.status(200);
-  else reply.status(520);
+  else reply.code(520).send();
 }
 
 export async function deleteContest(
@@ -34,10 +36,9 @@ export async function deleteContest(
   const { id } = request.params;
 
   if (!id) {
-    reply.status(400);
-    return;
+    return reply.code(400).send();
   }
 
   const res = await contestService.deleteContest(id);
-  reply.status(200);
+  reply.code(200).send();
 }
