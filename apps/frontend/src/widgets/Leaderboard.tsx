@@ -1,6 +1,6 @@
 import useGetRating from "@/features/rating/api/queries/useGetRating";
 import FilterBlock from "@/features/rating/components/FilterBlock";
-import PaginationBlock from "@/features/rating/components/PaginationBlock";
+import PaginationBlock from "@/features/rating/components/PaginationBlock/PaginationBlock";
 import RatingTable from "@/features/rating/components/RatingTable";
 import { Route } from "@/routes";
 

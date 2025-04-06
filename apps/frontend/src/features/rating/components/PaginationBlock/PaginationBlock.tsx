@@ -1,0 +1,108 @@
+import { Button } from "@repo/ui/button";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+} from "@repo/ui/pagination";
+import { ChevronLeft, ChevronRight, MoreHorizontalIcon } from "lucide-react";
+
+import usePagination from "../../hooks/usePagination";
+import PaginationEllipsis from "./PaginationElipsis";
+import PaginationPage from "./PaginationPage";
+
+const PAGINATION_WINDOW = 5;
+
+export default function PaginationBlock({
+  pageCount,
+  paginationWindow = PAGINATION_WINDOW,
+}: {
+  pageCount: number;
+  paginationWindow?: number;
+}) {
+  const { page, activeIndex, paginationPages, setActiveIndex, navigateToPage } =
+    usePagination(pageCount, paginationWindow);
+
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    const page = Number(e.currentTarget.dataset.page) ?? 1;
+    navigateToPage(page);
+  };
+
+  if (pageCount === 1) {
+    return (
+      <Pagination className=" grow">
+        <PaginationContent>
+          <PaginationPage
+            pageNum={1}
+            currentPage={page}
+            onClick={handleClick}
+          />
+        </PaginationContent>
+      </Pagination>
+    );
+  }
+
+  return (
+    <Pagination className=" grow">
+      <PaginationContent>
+        <PaginationItem>
+          <Button
+            data-page={page - 1}
+            disabled={page === 1}
+            variant={"ghost"}
+            onClick={handleClick}
+          >
+            <ChevronLeft />
+            Previous
+          </Button>
+        </PaginationItem>
+        {pageCount > paginationWindow && (
+          <PaginationPage
+            pageNum={1}
+            currentPage={page}
+            onClick={handleClick}
+          />
+        )}
+
+        {activeIndex > paginationWindow - 1 && (
+          <PaginationEllipsis
+            pageNum={activeIndex - paginationWindow}
+            onClick={handleClick}
+          />
+        )}
+        {paginationPages.map((pageNum) => (
+          <PaginationPage
+            key={pageNum}
+            pageNum={pageNum}
+            currentPage={page}
+            onClick={handleClick}
+          />
+        ))}
+        {activeIndex < pageCount - paginationWindow - 1 && (
+          <PaginationEllipsis
+            pageNum={activeIndex + paginationWindow}
+            onClick={handleClick}
+          />
+        )}
+
+        {pageCount > paginationWindow && (
+          <PaginationPage
+            pageNum={pageCount}
+            currentPage={page}
+            onClick={handleClick}
+          />
+        )}
+        <PaginationItem>
+          <Button
+            data-page={page + 1}
+            disabled={page === pageCount}
+            variant={"ghost"}
+            onClick={handleClick}
+          >
+            Next
+            <ChevronRight />
+          </Button>
+        </PaginationItem>
+      </PaginationContent>
+    </Pagination>
+  );
+}
