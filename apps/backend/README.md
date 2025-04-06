@@ -10,7 +10,7 @@
 Апи так же можно посмотреть в свагере (/documentation) при запуске 
 
 ```
-pnpm rin i
+pnpm rгn i
 pnpm run dev
 ```
 
