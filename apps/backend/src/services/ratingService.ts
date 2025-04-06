@@ -1,5 +1,5 @@
 import Rating from "../models/Rating.js";
-import { ContestData, DataEntry, RatingDTO } from "../../types";
+import { ContestData, DataEntry } from "../../types";
 import logService from "./logService.js";
 import { logger } from "../server.js";
 import { removeEmailPhone } from "../utils.js";
@@ -33,7 +33,7 @@ async function updateRating(data: DataEntry[], contestId: string) {
       })
     );
   }
-  const res = await Promise.all(queue);
+  await Promise.all(queue);
 }
 
 async function filterByUserSearch(search: string): Promise<RatingResponse> {

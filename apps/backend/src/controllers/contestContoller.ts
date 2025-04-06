@@ -39,6 +39,6 @@ export async function deleteContest(
     return reply.code(400).send();
   }
 
-  const res = await contestService.deleteContest(id);
+  await contestService.deleteContest(id);
   reply.code(200).send();
 }

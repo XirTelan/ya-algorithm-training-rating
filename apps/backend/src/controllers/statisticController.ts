@@ -1,5 +1,5 @@
 import { FastifyRequest, FastifyReply } from "fastify";
-import statisticService from "../services/statisticService";
+import statisticService from "../services/statisticService.js";
 
 export async function getStatTaskWithAttempts(
   request: FastifyRequest,

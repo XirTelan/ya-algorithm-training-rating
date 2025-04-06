@@ -44,11 +44,15 @@ fastify.register(statisticRoutes);
 fastify.register(contestsCheck);
 
 fastify.listen(
-  { port: Number(process.env.SERVER_PORT) ?? DEFAULT_PORT },
-  function (err, address) {
+  {
+    port: process.env.SERVER_PORT
+      ? Number(process.env.SERVER_PORT)
+      : DEFAULT_PORT,
+  },
+  function (err) {
     if (err) {
       fastify.log.error(err);
-      process.exit(1);
+      throw Error("error");
     }
   }
 );

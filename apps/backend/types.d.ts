@@ -1,5 +1,3 @@
-import { Date } from "mongoose";
-
 export type ContestDTO = {
   _id?: string;
   contestTitle: string;
@@ -51,3 +49,11 @@ export type LogDTO = {
   createdAt: string;
   updatedAt: string;
 };
+
+export type StatisticTaskAttempts = {
+  totalTasks: number;
+  totalTries: number;
+  userCount: number;
+};
+
+export type StatisticTaskTotal = Omit<StatisticTaskAttempts, "totalTries">;

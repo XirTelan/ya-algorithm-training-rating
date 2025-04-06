@@ -1,9 +1,8 @@
-import { ContestDTO } from "../../types";
-import Rating from "../models/Rating";
-import { logger } from "../server";
-import contestService from "./contestService";
+import { StatisticTaskAttempts, StatisticTaskTotal } from "../../types";
+import Rating from "../models/Rating.js";
+import { logger } from "../server.js";
 
-async function getStatTaskTotal() {
+async function getStatTaskTotal(): Promise<StatisticTaskTotal[]> {
   try {
     const results = await Rating.aggregate([
       {
@@ -32,11 +31,11 @@ async function getStatTaskTotal() {
     return results;
   } catch (error) {
     logger.error(error, "Error getStatTaskTotal:");
-    return undefined;
+    return [];
   }
 }
 
-async function getStatTaskWithAttempts() {
+async function getStatTaskWithAttempts(): Promise<StatisticTaskAttempts[]> {
   try {
     const results = await Rating.aggregate([
       {
@@ -76,6 +75,7 @@ async function getStatTaskWithAttempts() {
       err,
       "Error aggregating user counts by totalTasks and totalTries:"
     );
+    return [];
   }
 }
 

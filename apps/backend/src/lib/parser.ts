@@ -1,6 +1,5 @@
 import sessionService from "../services/sessionService.js";
 import * as cheerio from "cheerio";
-import { children } from "cheerio/dist/commonjs/api/traversing";
 
 import { ConfigType, DataEntry } from "../../types";
 import contestService from "../services/contestService.js";
@@ -78,7 +77,7 @@ export async function getContestInfo(contestId: string, sessionId: string) {
 
   const tasksInfo = $top.childNodes
     .slice(2, $top.childNodes.length - 2)
-    .map((x, indx) => {
+    .map((x) => {
       const str = $(x).text();
       const [success, attempts] = str.slice(1).split("/").map(Number);
       return { task: str[0], success, attempts };

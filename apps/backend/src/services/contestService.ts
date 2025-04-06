@@ -1,5 +1,5 @@
 import Contest from "../models/Contest.js";
-import { ContestDTO } from "../../types.js";
+import { ContestDTO } from "../../types";
 import { logger } from "../server.js";
 
 async function getContests(): Promise<ContestDTO[]> {

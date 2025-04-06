@@ -1,6 +1,5 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import ratingService from "../services/ratingService";
-import { logger } from "../server";
+import ratingService from "../services/ratingService.js";
 
 type GetRatingSearchParams = {
   search: string | undefined;

@@ -46,7 +46,7 @@ export default async function (
     fastify.log.info("Connected to MongoDB");
   } catch (error) {
     fastify.log.error("MongoDB Connection Error:", error);
-    process.exit(1);
+    throw new Error("MongoDB Connection Error");
   }
 
   process.on("SIGINT", async () => {
@@ -54,6 +54,6 @@ export default async function (
     fastify.log.info(
       "MongoDB connection closed due to application termination"
     );
-    process.exit(0);
+    throw new Error("MongoDB connection closed due to application termination");
   });
 }
