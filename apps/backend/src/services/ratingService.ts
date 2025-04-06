@@ -2,7 +2,7 @@ import Rating from "../models/Rating.js";
 import { ContestData, DataEntry, RatingDTO } from "../../types";
 import logService from "./logService.js";
 import { logger } from "../server.js";
-import { Aggregate } from "mongoose";
+import { removeEmailPhone } from "../utils.js";
 
 type RatingResponse = {
   items: ContestData[];
@@ -87,7 +87,7 @@ async function filterByUserSearch(search: string): Promise<RatingResponse> {
   allUsers.forEach((user) => {
     index++;
     if (!matchSet.has(user._id)) return;
-    results.push({ ...user, position: index });
+    results.push({ ...user, _id: removeEmailPhone(user._id), position: index });
   });
   return {
     items: results,

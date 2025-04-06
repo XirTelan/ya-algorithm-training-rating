@@ -10,7 +10,6 @@ import ratingService from "../services/ratingService.js";
 
 const CONTEST_URL = `https://contest.yandex.ru/contest`;
 
-
 async function fetchContestPage(
   contestId: string,
   page: number,
