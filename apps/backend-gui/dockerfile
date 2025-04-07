@@ -20,15 +20,17 @@ RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
 COPY --from=builder /app/out/json/ .
+
+RUN corepack enable
 RUN pnpm install
 
 COPY --from=builder /app/out/full/ .
-RUN pnpm turbo build
+RUN pnpm turbo build --filter=@yatr/backend-gui
 
 FROM base AS runner
 WORKDIR /app
 
 FROM nginx:stable-alpine AS production
-COPY --from=builder /app/apps/backend-gui/dist /usr/share/nginx/html
+COPY --from=installer /app/apps/backend-gui/dist /usr/share/nginx/html
 EXPOSE 8080
 CMD ["nginx", "-g", "daemon off;"]

@@ -24,6 +24,8 @@ WORKDIR /app
 
 # First install the dependencies (as they change less often)
 COPY --from=builder /app/out/json/ .
+RUN corepack enable
+
 RUN pnpm install
 
 # Build the project
@@ -31,12 +33,13 @@ COPY --from=builder /app/out/full/ .
 
 COPY --from=builder /app/out/full/ .
 
-RUN pnpm turbo build
+RUN pnpm turbo build --filter=@yatr/frontend
+
 
 FROM base AS runner
 WORKDIR /app
 
 FROM nginx:stable-alpine AS production
-COPY --from=builder /app/apps/frontend/dist /usr/share/nginx/html
+COPY --from=installer /app/apps/frontend/dist /usr/share/nginx/html
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]

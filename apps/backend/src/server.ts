@@ -48,6 +48,7 @@ fastify.listen(
     port: process.env.SERVER_PORT
       ? Number(process.env.SERVER_PORT)
       : DEFAULT_PORT,
+    host: process.env.SERVER_HOST,
   },
   function (err) {
     if (err) {

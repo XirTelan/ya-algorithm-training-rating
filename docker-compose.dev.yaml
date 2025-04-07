@@ -1,0 +1,28 @@
+services:
+  mongodb:
+    image: mongo
+    container_name: dev-mongo
+    restart: always
+    env_file:
+      - ./.env
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./configs/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+      - mongodbdev:/data/db
+
+  mongo-express:
+    image: mongo-express
+    container_name: dev-mongo-express
+    restart: always
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: password
+      ME_CONFIG_MONGODB_URL: mongodb://root:password@mongodb:27017/
+    depends_on:
+      - mongodb
+    ports:
+      - "8081:8081"
+
+volumes:
+  mongodbdev:
