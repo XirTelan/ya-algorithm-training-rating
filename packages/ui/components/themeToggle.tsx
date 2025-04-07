@@ -10,6 +10,8 @@ export function ModeToggle() {
   };
 
   return (
-    <Toggle onClick={toggle}>{theme === "dark" ? <Moon /> : <Sun />}</Toggle>
+    <Toggle aria-label="Switch theme" onClick={toggle}>
+      {theme === "dark" ? <Moon /> : <Sun />}
+    </Toggle>
   );
 }

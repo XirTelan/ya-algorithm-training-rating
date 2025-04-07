@@ -48,7 +48,7 @@ const FilterBlock = () => {
       </div>
       <Popover>
         <PopoverTrigger asChild>
-          <Button variant="outline">
+          <Button aria-label="open search filters" variant="outline">
             <FilterIcon />
           </Button>
         </PopoverTrigger>
