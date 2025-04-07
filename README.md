@@ -94,6 +94,7 @@ docker build -t front-image -f ./apps/frontend/dockerfile .
 ### Env
 
 для запуска через докер `.env` должен быть в руте. 
+
 Для запуска локально через `pnpm run dev` env должен быть в apps/backend
 
 
