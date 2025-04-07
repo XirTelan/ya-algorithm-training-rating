@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "@repo/ui";
 
 import {
@@ -10,48 +10,28 @@ import {
 import { Button } from "@repo/ui/button";
 import { Card } from "@repo/ui/card";
 import { Input } from "@repo/ui/input";
-
+import { updateSession } from "@/api/session";
+import { useGetSession } from "@/api/queries";
+import { useQueryClient } from "@tanstack/react-query";
 
 const SessionBlock = () => {
-  const [sessionToken, setSessionToken] = useState("");
+  const { data } = useGetSession();
+  const queryClient = useQueryClient();
+  const [sessionToken, setSessionToken] = useState(data?.value ?? "");
 
-  async function updateSessionId(data: string) {
-    try {
-      const res = await fetch(`/api/session`, {
-        method: "POST",
-        body: JSON.stringify({
-          name: "sessionId",
-          value: data,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      if (res.ok) {
-        toast("SessionId", {
-          description: "Updated ",
-        });
-      }
-    } catch (error) {
-      console.error(error);
+  async function handleUpdate() {
+    const { success } = await updateSession(sessionToken);
+    if (success) {
+      toast("SessionId", { description: "SessionId is updated" });
+      queryClient.invalidateQueries({ queryKey: ["session"] });
+    } else {
+      toast("SessionId", { description: "Update failed" });
     }
   }
 
-  useEffect(() => {
-    async function getSession() {
-      try {
-
-        const res = await fetch(`/api/session`);
-        if (res.ok) {
-          const data: Session = await res.json();
-          setSessionToken(data.value);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    getSession();
-  }, [setSessionToken]);
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSessionToken(e.target.value);
+  };
 
   return (
     <div>
@@ -65,18 +45,12 @@ const SessionBlock = () => {
                 }`}
               >
                 SESSION_ID
-              </span>{" "}
+              </span>
             </AccordionTrigger>
             <AccordionContent>
               <div className="flex gap-4 m-4">
-                <Input
-                  value={sessionToken ?? ""}
-                  onChange={(e) => setSessionToken(e.target.value)}
-                />
-                <Button
-                  type="button"
-                  onClick={() => updateSessionId(sessionToken)}
-                >
+                <Input value={sessionToken ?? ""} onChange={onChange} />
+                <Button type="button" onClick={handleUpdate}>
                   Update
                 </Button>
               </div>
@@ -89,10 +63,3 @@ const SessionBlock = () => {
 };
 
 export default SessionBlock;
-
-type Session = {
-  createdAt: Date;
-  updatedAt: Date;
-  name: string;
-  value: string;
-};
