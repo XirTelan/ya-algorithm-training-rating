@@ -4,65 +4,27 @@ import {
   getContests,
   updateContests,
 } from "../controllers/contestContoller.js";
-import { contestDTOSchema } from "../schemas/contest.schema.js";
+import contestsSchema from "../schemas/contests.schema.js";
 
 export default async function contestRoutes(fastify: FastifyInstance) {
   fastify.get(
     "/api/contests",
     {
-      schema: {
-        tags: ["contests"],
-        response: {
-          200: {
-            type: "array",
-            items: contestDTOSchema,
-          },
-        },
-      },
+      schema: contestsSchema.getSchema,
     },
     getContests
   );
   fastify.post(
     "/api/contests",
     {
-      schema: {
-        tags: ["contests"],
-        body: {
-          type: "object",
-          properties: {
-            contests: { type: "array", items: contestDTOSchema },
-          },
-        },
-        response: {
-          200: {
-            type: "object",
-            properties: {
-              success: { type: "boolean" },
-            },
-          },
-          400: {
-            type: "object",
-            properties: {
-              success: { type: "boolean", const: false },
-            },
-          },
-        },
-      },
+      schema: contestsSchema.postSchema,
     },
     updateContests
   );
   fastify.delete(
     "/api/contests/:id",
     {
-      schema: {
-        tags: ["contests"],
-        params: {
-          type: "object",
-          properties: {
-            id: { type: "string" },
-          },
-        },
-      },
+      schema: contestsSchema.deleteSchema,
     },
     deleteContest
   );

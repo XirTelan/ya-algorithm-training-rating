@@ -3,52 +3,20 @@ import {
   getStatTaskTotal,
   getStatTaskWithAttempts,
 } from "../controllers/statisticController.js";
+import statisticSchema from "../schemas/statistic.schema.js";
 
 export default async function statisticRoutes(fastify: FastifyInstance) {
   fastify.get(
     "/api/statistic/withattempts",
     {
-      schema: {
-        tags: ["statistic"],
-
-        response: {
-          200: {
-            description: "Successful response",
-            type: "array",
-            items: {
-              type: "object",
-              properties: {
-                totalTasks: { type: "integer" },
-                totalTries: { type: "integer" },
-                userCount: { type: "integer" },
-              },
-            },
-          },
-        },
-      },
+      schema: statisticSchema.withAttempts,
     },
     getStatTaskWithAttempts
   );
   fastify.get(
-    "/api/statistic/tasttotal",
+    "/api/statistic/tasktotal",
     {
-      schema: {
-        tags: ["statistic"],
-
-        response: {
-          200: {
-            description: "Successful response",
-            type: "array",
-            items: {
-              type: "object",
-              properties: {
-                totalTasks: { type: "integer" },
-                userCount: { type: "integer" },
-              },
-            },
-          },
-        },
-      },
+      schema: statisticSchema.taskTotal,
     },
     getStatTaskTotal
   );

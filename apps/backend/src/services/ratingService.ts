@@ -1,13 +1,8 @@
 import Rating from "../models/Rating.js";
-import { ContestData, DataEntry } from "../../types";
+import { RatingAggregatedDTO, DataEntry, RatingResponse } from "../../types";
 import logService from "./logService.js";
 import { logger } from "../server.js";
 import { removeEmailPhone } from "../utils.js";
-
-type RatingResponse = {
-  items: ContestData[];
-  totalCount: number;
-};
 
 async function updateRating(data: DataEntry[], contestId: string) {
   logger.info("updateRating: entries count:", data.length);
@@ -55,7 +50,7 @@ async function filterByUserSearch(search: string): Promise<RatingResponse> {
   if (match.length == 0) return { items: [], totalCount: 0 };
   const matchSet = new Set(match.map((obj) => obj._id));
 
-  const allUsers = await Rating.aggregate<ContestData>([
+  const allUsers = await Rating.aggregate<RatingAggregatedDTO>([
     {
       $group: {
         _id: "$userId",
@@ -83,7 +78,7 @@ async function filterByUserSearch(search: string): Promise<RatingResponse> {
     },
   ]);
   let index = 0;
-  const results: ContestData[] = [];
+  const results: RatingAggregatedDTO[] = [];
   allUsers.forEach((user) => {
     index++;
     if (!matchSet.has(user._id)) return;
@@ -133,7 +128,7 @@ async function getUsersCount() {
 async function getUsersTotalAndByContest(
   skip: number,
   limit: number = 50
-): Promise<ContestData[]> {
+): Promise<RatingAggregatedDTO[]> {
   try {
     const results = await Rating.aggregate([
       {

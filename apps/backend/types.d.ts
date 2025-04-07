@@ -1,53 +1,65 @@
-export type ContestDTO = {
-  _id?: string;
-  contestTitle: string;
-  contestId: string;
-  autoUpdate: number;
-  attempts: string;
-  date?: number;
-  stats: {
-    task: string;
-    success: number;
-    attempts: number;
-  }[];
-  status: string;
-};
-
-export type RatingDTO = {
-  userId: string;
-  contestId: string;
-  tasks: number;
-  fine: number;
-  tries: number;
-  createdAt: string;
-  updatedAt: string;
-};
-
 export type ConfigType = {
   [key: string]: string;
 };
 
+export type ContestDTO = {
+  _id?: string;
+  attempts: string;
+  autoUpdate: number;
+  contestId: string;
+  contestTitle: string;
+  date?: number;
+  stats: {
+    attempts: number;
+    success: number;
+    task: string;
+  }[];
+  status: string;
+};
+
 export type DataEntry = {
+  fine: string;
   id: string;
   tasks: string;
-  fine: string;
   tries: number;
 };
 
-export type ContestData = {
-  _id: string;
-  position: number;
-  totalTasks: number;
-  totalFine: number;
-  totalTries: number;
-  byContest: { [key: string]: unknown }[];
-};
-
 export type LogDTO = {
+  createdAt: string;
   message: string;
   type: string;
-  createdAt: string;
   updatedAt: string;
+};
+
+export type RatingAggregatedDTO = {
+  _id: string;
+  byContest: { [key: string]: unknown }[];
+  position: number;
+  totalFine: number;
+  totalTasks: number;
+  totalTries: number;
+};
+
+export type RatingDTO = {
+  contestId: string;
+  createdAt: string;
+  fine: number;
+  tasks: number;
+  tries: number;
+  updatedAt: string;
+  userId: string;
+};
+
+export type RatingResponse = {
+  items: RatingAggregatedDTO[];
+  totalCount: number;
+};
+
+export type SessionDTO = {
+  createdAt: Date;
+  name: string;
+  updatedAt: Date;
+  value: string;
 };
 
 export type StatisticTaskAttempts = {
