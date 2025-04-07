@@ -4,6 +4,7 @@ import PaginationBlock from "@/features/rating/components/PaginationBlock/Pagina
 import RatingTable from "@/features/rating/components/RatingTable";
 import { Route } from "@/routes";
 
+
 import React, { Suspense } from "react";
 
 export default function Leaderboard() {
