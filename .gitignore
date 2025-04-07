@@ -6,6 +6,7 @@ dist
 dist-ssr
 *.local
 .env
+.htpasswd 
 .cache
 server/dist
 public/dist

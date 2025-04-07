@@ -39,6 +39,7 @@ services:
 
   backend-gui:
     container_name: "backend-gui"
+    restart: always
     build:
       context: .
       dockerfile: ./apps/backend-gui/dockerfile
@@ -47,6 +48,7 @@ services:
 
   frontend:
     container_name: "frontend"
+    restart: always
     build:
       context: .
       dockerfile: ./apps/frontend/dockerfile
@@ -55,6 +57,7 @@ services:
 
   nginx:
     image: nginx:latest
+    restart: always
     ports:
       - "80:80"
     volumes:
