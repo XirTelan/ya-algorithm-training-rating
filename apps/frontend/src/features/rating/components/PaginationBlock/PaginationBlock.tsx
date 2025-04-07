@@ -4,7 +4,7 @@ import {
   PaginationContent,
   PaginationItem,
 } from "@repo/ui/pagination";
-import { ChevronLeft, ChevronRight, MoreHorizontalIcon } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import usePagination from "../../hooks/usePagination";
 import PaginationEllipsis from "./PaginationElipsis";
@@ -19,11 +19,15 @@ export default function PaginationBlock({
   pageCount: number;
   paginationWindow?: number;
 }) {
-  const { page, activeIndex, paginationPages, setActiveIndex, navigateToPage } =
-    usePagination(pageCount, paginationWindow);
+  const { page, activeIndex, paginationPages, navigateToPage } = usePagination(
+    pageCount,
+    paginationWindow
+  );
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    const page = Number(e.currentTarget.dataset.page) ?? 1;
+    const page = e.currentTarget.dataset.page
+      ? Number(e.currentTarget.dataset.page)
+      : 1;
     navigateToPage(page);
   };
 

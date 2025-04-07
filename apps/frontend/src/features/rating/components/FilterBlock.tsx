@@ -11,7 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@repo/ui/select";
-import { useNavigate, useSearch } from "@tanstack/react-router";
+import { useNavigate } from "@tanstack/react-router";
 import { FilterIcon, Search } from "lucide-react";
 import { useEffect, useState } from "react";
 

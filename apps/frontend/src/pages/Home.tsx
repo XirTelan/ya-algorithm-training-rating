@@ -1,7 +1,5 @@
 import FilterBlock from "@/features/rating/components/FilterBlock";
-import RatingTable from "@/features/rating/components/RatingTable";
 import Leaderboard from "@/widgets/Leaderboard";
-import UpdatesInfo from "@/widgets/UpdatesInfo";
 import { Skeleton } from "@repo/ui/skeleton";
 import { Suspense } from "react";
 

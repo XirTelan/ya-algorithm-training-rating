@@ -5,16 +5,20 @@ export default function Footer() {
   return (
     <footer className="w-full">
       <Separator className="  h-0.5 my-4" />
-      <div className="container m-auto my-4">
-        <span className=" text-secondary-foreground text-sm">
+      <div className="container m-auto my-4 flex-col flex">
+        <Separator className="h-0.5 my-2" />
+        <span>Дисклеймер</span>
+        <span className=" text-secondary-foreground/80 text-sm">
           Яндекс не предоставляет никакого уникального идентификатора для
           участников. Так что рейтинг не учитывает участников с полностью
           одинаковыми именами
         </span>
+        <Separator className="h-0.5 my-2" />
         <a
           href="https://github.com/XirTelan/ya-algorithm-training-rating"
           target="_blank"
           className=" flex gap-2 items-center hover:underline"
+          rel="noreferrer"
         >
           <div className="w-6 h-6 ">
             <svg

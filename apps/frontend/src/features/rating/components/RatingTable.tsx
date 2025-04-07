@@ -1,7 +1,6 @@
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableFooter,
   TableHead,
@@ -9,7 +8,7 @@ import {
   TableRow,
 } from "@repo/ui/table";
 
-import { ContestData, RatingDTO } from "@/types";
+import { RatingDTO } from "@/types";
 import useGetContests from "@/shared/api/contests";
 
 type RatingTableProps = {

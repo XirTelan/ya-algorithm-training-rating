@@ -5,7 +5,7 @@ import {
   AccordionContent,
   AccordionItem,
 } from "@repo/ui/accordion";
-import { Card, CardContent, CardDescription, CardHeader } from "@repo/ui/card";
+import { Card, CardContent, CardHeader } from "@repo/ui/card";
 import {
   Table,
   TableHead,
@@ -42,6 +42,7 @@ export default function SummaryByContest() {
                 <a
                   href={`https://contest.yandex.ru/contest/${contest.contestId}/standings/`}
                   target={"_blank"}
+                  rel="noreferrer"
                 >
                   <div className="flex items-center gap-1  ">
                     Открыть Яндек контест ({contest.contestId})

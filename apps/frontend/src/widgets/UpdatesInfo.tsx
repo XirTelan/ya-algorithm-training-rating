@@ -1,11 +1,5 @@
 import useGetContests from "@/shared/api/contests";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@repo/ui/accordion";
-import { Card, CardContent } from "@repo/ui/card";
+
 import {
   Table,
   TableBody,
@@ -14,10 +8,9 @@ import {
   TableHeader,
   TableRow,
 } from "@repo/ui/table";
-import React from "react";
 
 export default function UpdatesInfo() {
-  const { data} = useGetContests();
+  const { data } = useGetContests();
 
   return (
     <Table aria-label="simple table">

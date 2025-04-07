@@ -23,6 +23,6 @@ async function getStatTaskWithAttempts(): Promise<StatisticTaskAttempts[]> {
 }
 
 async function getStatTaskTotal(): Promise<StatisticTaskTotal[]> {
-  const data = await fetch(`/api/statistic/tasttotal`);
+  const data = await fetch(`/api/statistic/tasktotal`);
   return await data.json();
 }

@@ -38,7 +38,6 @@ export type ContestDTO = {
   status: string;
 };
 
-export type StatisticContest = {};
 
 export type StatisticTaskAttempts = {
   totalTasks: number;
