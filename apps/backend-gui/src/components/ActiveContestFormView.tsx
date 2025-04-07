@@ -1,5 +1,4 @@
 import { Separator } from "@repo/ui/separator";
-import { Contest } from "@/types";
 
 import { Button } from "@repo/ui/button";
 import { Card, CardContent, CardFooter } from "@repo/ui/card";
@@ -21,9 +20,10 @@ import {
 import { EllipsisVertical, Info, X } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { ContestForm } from "@/containers/ActiveContests";
+import { ContestDTO } from "@/types";
 
 type FormViewProps = {
-  fields: Contest[];
+  fields: ContestDTO[];
   register: ReturnType<
     typeof useForm<ContestForm>
   >["register"];
@@ -39,6 +39,7 @@ export default function ActiveContestFormView({
   onSubmit,
   onDelete,
 }: FormViewProps) {
+
   return (
     <div>
       <form onSubmit={onSubmit}>

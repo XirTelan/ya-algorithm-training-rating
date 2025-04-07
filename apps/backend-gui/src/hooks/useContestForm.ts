@@ -1,33 +1,21 @@
+import { deleteContest, postContests } from "@/api/contests";
 import { ContestForm } from "@/containers/ActiveContests";
-import { Contest } from "@/types";
+import { ContestDTO } from "@/types";
 import { toast } from "@repo/ui";
-import { useCallback, useEffect } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useCallback } from "react";
 import {
   FieldValues,
   UseFieldArrayAppend,
   UseFieldArrayRemove,
-  UseFormReset,
 } from "react-hook-form";
 
-
 export default function useContestForm(
-  fields: Contest[],
-  reset: UseFormReset<ContestForm>,
+  fields: ContestDTO[],
   remove: UseFieldArrayRemove,
   append: UseFieldArrayAppend<ContestForm>
 ) {
-
-  //[TASK-BGUI]
-  useEffect(() => {
-    async function loadData() {
-      const responce = await fetch(`/api/contests`);
-      if (responce.ok) {
-        const result = await responce.json();
-        reset({ contests: result });
-      }
-    }
-    loadData();
-  }, [reset]);
+  const queryClient = useQueryClient();
 
   const addContest = useCallback(() => {
     append({
@@ -40,44 +28,50 @@ export default function useContestForm(
     });
   }, [append, fields.length]);
 
-  const deleteContest = useCallback(
-    async (indx: number) => {
-      if ("_id" in fields[indx]) {
-        const res = await fetch(
-          `/api/contests/${fields[indx]._id}`,
-          {
-            method: "DELETE",
+  const handleDelete = useCallback(
+    async (index: number) => {
+      const field = fields[index];
+      if ("_id" in field && field._id) {
+        try {
+          const { success } = await deleteContest(field._id);
+          if (success) {
+            toast("Delete Contest", { description: "Success" });
+            queryClient.invalidateQueries({ queryKey: ["contests"] });
+          } else {
+            toast("Delete Contest", { description: "Failed" });
           }
-        );
-        if (res.ok) {
-          toast("Delete Contest", {
-            description: "success",
-          });
+        } catch (error) {
+          console.log(error);
+          toast("Delete Contest", { description: "Error deleting contest" });
         }
       }
-      remove(indx);
+      remove(index);
     },
-    [fields, remove]
+    [fields, queryClient, remove]
   );
 
-  const submit = useCallback(async (data: FieldValues) => {
-    const res = await fetch(`/api/contests`, {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    if (res.ok) {
-      toast("Contest Data", {
-        description: "success update",
-      });
-    }
-  }, []);
+  const { mutate, isPending } = useMutation({
+    mutationFn: postContests,
+    onSuccess: () => {
+      toast("Save Contests", { description: "Saved successfully" });
+      queryClient.invalidateQueries({ queryKey: ["contests"] });
+    },
+    onError: () => {
+      toast("Save Contests", { description: "Failed to save contests" });
+    },
+  });
+
+  const submit = useCallback(
+    async (data: FieldValues) => {
+      mutate(data.contests);
+    },
+    [mutate]
+  );
 
   return {
     addContest,
-    deleteContest,
+    handleDelete,
     submit,
+    isSubmitting: isPending,
   };
 }
