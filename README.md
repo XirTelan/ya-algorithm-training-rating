@@ -4,9 +4,9 @@
 
 1. [Общее](#Общее)
 2. [Содержимое](#Содержимое)
-   - [Frontend](#Frontend)
-   - [Backend](#Backend)
-   - [Backend-gui](#Backend-gui)
+   - [Frontend](./apps/frontend/)
+   - [Backend](./apps/backend/)
+   - [Backend-gui](./apps/backend-gui/)
 4. [Установка](#Установка)
    - [Обычный способ](#Обычный-способ)
    - [Docker](#Docker)
