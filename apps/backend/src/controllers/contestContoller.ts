@@ -22,7 +22,7 @@ export async function updateContests(
     return reply.code(400).send();
   }
   const res = await contestService.updateContests(body.contests);
-  if (res.success) return reply.status(200);
+  if (res.success) return reply.code(200).send();
   else return reply.code(520).send();
 }
 

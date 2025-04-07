@@ -23,6 +23,12 @@ const postSchema: FastifySchema = {
       sessionId: { type: "string" },
     },
   },
+  response: {
+    200: {
+      description: "Empty 200 OK response",
+      type: "null",
+    },
+  },
 };
 
 export default {

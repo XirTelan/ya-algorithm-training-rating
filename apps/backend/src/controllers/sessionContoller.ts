@@ -12,6 +12,6 @@ export async function updateSession(
 ) {
   const body = request.body;
   const res = await sessionService.updateSession(body.sessionId);
-  if (res.success) return reply.code(200);
-  else return reply.code(520);
+  if (res.success) return reply.code(200).send();
+  else return reply.code(520).send();
 }
