@@ -26,7 +26,6 @@ export const contestDTOSchema = {
     "contestId",
     "autoUpdate",
     "attempts",
-    "stats",
     "status",
   ],
 };

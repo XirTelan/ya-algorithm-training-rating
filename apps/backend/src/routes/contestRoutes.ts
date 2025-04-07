@@ -28,8 +28,10 @@ export default async function contestRoutes(fastify: FastifyInstance) {
       schema: {
         tags: ["contests"],
         body: {
-          type: "array",
-          items: contestDTOSchema,
+          type: "object",
+          properties: {
+            contests: { type: "array", items: contestDTOSchema },
+          },
         },
         response: {
           200: {
