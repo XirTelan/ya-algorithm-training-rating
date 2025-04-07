@@ -33,7 +33,6 @@ type LogEntry = {
   type: Exclude<LogType, "all">;
   createdAt: Date;
 };
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 const Logger = () => {
   const [logs, setLogs] = useState<LogEntry[]>([]);
@@ -46,7 +45,7 @@ const Logger = () => {
     const getLogs = async () => {
       try {
         const res = await fetch(
-          `${BACKEND_URL}/api/logs?type=${filter.type}&time=${filter.time}`
+          `/api/logs?type=${filter.type}&time=${filter.time}`
         );
         if (res.ok) {
           const data = await res.json();

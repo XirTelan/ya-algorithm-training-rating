@@ -1,8 +1,5 @@
-import getRating from "@/features/rating/api/rating";
 import { StatisticTaskAttempts, StatisticTaskTotal } from "@/types";
-import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
-
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+import { useSuspenseQuery } from "@tanstack/react-query";
 
 export const useGetStatisticTasks = () => {
   return useSuspenseQuery({
@@ -21,11 +18,11 @@ export const useGetStatisticTaskTotal = () => {
 };
 
 async function getStatTaskWithAttempts(): Promise<StatisticTaskAttempts[]> {
-  const data = await fetch(`${BACKEND_URL}/api/statistic/withattempts`);
+  const data = await fetch(`/api/statistic/withattempts`);
   return await data.json();
 }
 
 async function getStatTaskTotal(): Promise<StatisticTaskTotal[]> {
-  const data = await fetch(`${BACKEND_URL}/api/statistic/tasttotal`);
+  const data = await fetch(`/api/statistic/tasttotal`);
   return await data.json();
 }

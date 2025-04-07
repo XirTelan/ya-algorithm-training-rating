@@ -9,7 +9,6 @@ import {
   UseFormReset,
 } from "react-hook-form";
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 export default function useContestForm(
   fields: Contest[],
@@ -21,7 +20,7 @@ export default function useContestForm(
   //[TASK-BGUI]
   useEffect(() => {
     async function loadData() {
-      const responce = await fetch(`${BACKEND_URL}/api/contests`);
+      const responce = await fetch(`/api/contests`);
       if (responce.ok) {
         const result = await responce.json();
         reset({ contests: result });
@@ -45,7 +44,7 @@ export default function useContestForm(
     async (indx: number) => {
       if ("_id" in fields[indx]) {
         const res = await fetch(
-          `${BACKEND_URL}/api/contests/${fields[indx]._id}`,
+          `/api/contests/${fields[indx]._id}`,
           {
             method: "DELETE",
           }
@@ -62,9 +61,7 @@ export default function useContestForm(
   );
 
   const submit = useCallback(async (data: FieldValues) => {
-    const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
-
-    const res = await fetch(`${BACKEND_URL}/api/contests`, {
+    const res = await fetch(`/api/contests`, {
       method: "POST",
       body: JSON.stringify(data),
       headers: {

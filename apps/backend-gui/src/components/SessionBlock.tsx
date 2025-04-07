@@ -11,14 +11,13 @@ import { Button } from "@repo/ui/button";
 import { Card } from "@repo/ui/card";
 import { Input } from "@repo/ui/input";
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 const SessionBlock = () => {
   const [sessionToken, setSessionToken] = useState("");
 
   async function updateSessionId(data: string) {
     try {
-      const res = await fetch(`${BACKEND_URL}/api/session`, {
+      const res = await fetch(`/api/session`, {
         method: "POST",
         body: JSON.stringify({
           name: "sessionId",
@@ -41,9 +40,8 @@ const SessionBlock = () => {
   useEffect(() => {
     async function getSession() {
       try {
-        const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
-        if (!BACKEND_URL) throw new Error("BACKEND_URL is empty");
-        const res = await fetch(`${BACKEND_URL}/api/session`);
+
+        const res = await fetch(`/api/session`);
         if (res.ok) {
           const data: Session = await res.json();
           setSessionToken(data.value);

@@ -1,7 +1,6 @@
 import { ContestDTO } from "@/types";
 import { useSuspenseQuery } from "@tanstack/react-query";
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 const useGetContests = () => {
   return useSuspenseQuery({
@@ -14,6 +13,6 @@ const useGetContests = () => {
 export default useGetContests;
 
 async function getContest(): Promise<ContestDTO[]> {
-  const data = await fetch(`${BACKEND_URL}/api/contests`);
+  const data = await fetch(`/api/contests`);
   return await data.json();
 }
