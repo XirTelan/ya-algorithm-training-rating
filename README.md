@@ -35,8 +35,10 @@
    - `ui`: Общие ui компоненты для frontend и backend-gui (shadncn/ui)
   
 3. **configs**:
+   - `.htpasswd`: для basse auth backend-gui
    - `mongo-init.js`: файл конфига первоначальной настройки для монго. Создает пользователя через которого бек будет подключаться.
-   - `nginx`: конфиг reverse-proxy
+   - `nginxGui.conf`: для backend-gui - включает base auth на nginx. Требуется наличие `.htpasswd` рядом
+   - `nginx.conf`: конфиг reverse-proxy
       перенаправляет запросы /api в бек контейнер и /gui в приложение backend-gui
      
  > [!IMPORTANT]
