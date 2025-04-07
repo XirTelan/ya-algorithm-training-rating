@@ -31,7 +31,7 @@ await fastify.register(swaggerUi, swaggerUiConfig);
 
 await fastify.register(fastifyEnv, fastifyEnvConfig);
 
-connectDB(fastify);
+await connectDB(fastify);
 
 fastify.register(cors);
 
