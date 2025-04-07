@@ -6,10 +6,10 @@ import { logger } from "../server.js";
 export async function getContests(_req: FastifyRequest, reply: FastifyReply) {
   try {
     const res = await contestService.getContests();
-    reply.code(200).send(res);
+    return reply.code(200).send(res);
   } catch (error) {
     logger.error(error, "contestContoller/getContest");
-    reply.code(500).send([]);
+    return reply.code(500).send([]);
   }
 }
 
@@ -22,8 +22,8 @@ export async function updateContests(
     return reply.code(400).send();
   }
   const res = await contestService.updateContests(body.contests);
-  if (res.success) reply.status(200);
-  else reply.code(520).send();
+  if (res.success) return reply.status(200);
+  else return reply.code(520).send();
 }
 
 export async function deleteContest(
@@ -40,5 +40,5 @@ export async function deleteContest(
   }
 
   await contestService.deleteContest(id);
-  reply.code(200).send();
+  return reply.code(200).send();
 }

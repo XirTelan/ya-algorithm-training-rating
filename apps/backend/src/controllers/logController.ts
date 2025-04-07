@@ -11,11 +11,11 @@ export async function getLogs(
   const { time, type } = request.query;
   const res = await logService.getLogs(time, type);
   if (res?.success) {
-    reply.send({
-      success: true,
-      data: res.data,
-    });
+    return reply.send(res);
   } else {
-    reply.code(400);
+    return reply.code(400).send({
+      success: false,
+      data: [],
+    });
   }
 }
