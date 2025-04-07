@@ -1,6 +1,16 @@
 # Яндекс контест лидерборд
-> [!Note]
-> Проект в работе. Документация не полная 
+
+## Оглавление
+
+1. [Общее](#Общее)
+2. [Содержимое](#Содержимое)
+   - [Frontend](./apps/frontend/)
+   - [Backend](./apps/backend/)
+   - [Backend-gui](./apps/backend-gui/)
+4. [Установка](#Установка)
+   - [Обычный способ](#Обычный-способ)
+   - [Docker](#Docker)
+   - [Env](#Env)
 
 
 ## Общее
@@ -22,7 +32,17 @@
    - `backend-gui`: Клиент для бека. Настройка контестов
 
 2. **packages**:
-   - `ui` Общие ui компоненты для frontend и backend-gui (shadncn/ui)
+   - `ui`: Общие ui компоненты для frontend и backend-gui (shadncn/ui)
+  
+3. **configs**:
+   - `mongo-init.js`: файл конфига первоначальной настройки для монго. Создает пользователя через которого бек будет подключаться.
+   - `nginx`: конфиг reverse-proxy
+      перенаправляет запросы /api в бек контейнер и /gui в приложение backend-gui
+     
+ > [!IMPORTANT]
+ > `mongo-init.js` запускается только при первом запуске. Если забыли env файл то перезапустив контейнер он не сработает. Нужно будет очистить 'volume' 
+
+     
 
 
 Подробноее описания для каждого приложения
@@ -63,15 +83,11 @@ pnpm run dev
 ```
 
 ### Docker
-> [!WARNING]
-> docker-compose не полностю настроен
 
-./mongo-init.js
+`docker-compose.yaml` - основной файл
+`docker-compose.dev.yaml` - упрощенный файл только с монго и монго экспресс. Можно поднять локально все/необходимые приложения через `pnpm` + монго через этот файл как dev среда 
 
-Файл конфига для монго при старте. Создает пользователя через которого бек будет подключаться.
-
-сразу все запустить можно через `docker-compose`
-
+сразу все запустить
 ```
 docker-compose up
 ```
@@ -87,6 +103,12 @@ docker build -t front-image -f ./apps/frontend/dockerfile .
 
 ### Env
 
+для запуска через докер `.env` должен быть в руте. 
+
+Для запуска локально через `pnpm run dev` env должен быть в apps/backend
+
+
+
 ```
 DATABASE_HOST=
 DATABASE_PORT=
@@ -96,16 +118,20 @@ MONGO_BACKEND_DATABASE=
 MONGO_INITDB_ROOT_USERNAME=
 MONGO_INITDB_ROOT_PASSWORD=
 MONGO_INITDB_DATABASE=
-SERVER_PORT=
+SERVER_PORT= 
+SERVER_HOST= 
 ```
 
 Для mongo-express
+
+`ME_WEB_USERNAME` и `ME_WEB_PASSWORD`  для аунтефикации через веб интерфейс
 
 ```
 ME_CONFIG_MONGODB_ADMINUSERNAME=
 ME_CONFIG_MONGODB_ADMINPASSWORD=
 ME_CONFIG_MONGODB_URL=
+ME_WEB_USERNAME=
+ME_WEB_PASSWORD=
 ```
 
 
-старый вариант с 
