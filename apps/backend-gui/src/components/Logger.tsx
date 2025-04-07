@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { Info, PackageOpen, ServerCrash, TriangleAlert } from "lucide-react";
 import { Card, CardContent } from "@repo/ui/card";
@@ -19,46 +19,15 @@ import {
   TableCell,
 } from "@repo/ui/table";
 import { Separator } from "@repo/ui/separator";
-
-type LogType = "all" | "info" | "error" | "warning";
-
-type Filter = {
-  type: LogType;
-  time: string;
-};
-
-type LogEntry = {
-  _id: string;
-  message: string;
-  type: Exclude<LogType, "all">;
-  createdAt: Date;
-};
+import { Filter, LogType } from "@/types";
+import { useGetLogs } from "@/api/queries";
 
 const Logger = () => {
-  const [logs, setLogs] = useState<LogEntry[]>([]);
   const [filter, setFilter] = useState<Filter>({
     type: "all",
     time: "1",
   });
-
-  useEffect(() => {
-    const getLogs = async () => {
-      try {
-        const res = await fetch(
-          `/api/logs?type=${filter.type}&time=${filter.time}`
-        );
-        if (res.ok) {
-          const data = await res.json();
-          setLogs(data.data);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    getLogs();
-    const update = setInterval(getLogs, 60_000);
-    return () => clearInterval(update);
-  }, [filter.time, filter.type]);
+  const { data: logs } = useGetLogs(filter);
 
   const iconsType = {
     info: <Info />,
@@ -78,7 +47,7 @@ const Logger = () => {
               defaultValue={filter.type}
             >
               <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Type" defaultValue={0} />
+                <SelectValue placeholder="Type" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All</SelectItem>
@@ -93,7 +62,7 @@ const Logger = () => {
               defaultValue={filter.time}
             >
               <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Time" defaultValue={0} />
+                <SelectValue placeholder="Time" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="1">Past 1h</SelectItem>
