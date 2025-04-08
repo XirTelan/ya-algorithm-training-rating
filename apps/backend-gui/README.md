@@ -1,6 +1,6 @@
 # GUI
 
-Стек: React, Vite, Tailwind, 
+Стек: React, Vite, Tailwind, Axios, Zustand 
 
 из @repo/ui shadcn/ui
 
