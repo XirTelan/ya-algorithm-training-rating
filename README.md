@@ -14,7 +14,11 @@
 
 
 ## Общее
-
+Общий стек: \
+   main: TS, React, Node (Fastify), MongoDb(mongoose), Tailwind CSS, \
+   libs:  Axios, Zustand , Tanstack Router, Tanstack Query,  React Hook Form, zod, cheerio,  shadcn/ui, \
+   other: Docker, docker-compose, nginx, turborepo, eslint, prettier \
+   
 Скраппер/парсер собирает участников в одну таблицу с нескольних контестов. Плюс немного статитстики
 
 ![image](https://github.com/user-attachments/assets/2e6e732d-0f61-4b60-a177-0b7c20ae4b25)
@@ -22,7 +26,6 @@
 
 ## Содержимое
 
-Общий стек: TS, React, Node (Fastify), MongoDb, Tailwind CSS
 
 Монорепо:
 1. **apps**:
