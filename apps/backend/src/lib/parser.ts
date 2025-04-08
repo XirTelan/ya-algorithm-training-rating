@@ -15,14 +15,19 @@ async function fetchContestPage(
   sessionId: string
 ) {
   const url = `${CONTEST_URL}/${contestId}/standings/?p=${page}`;
-  const responce = await fetch(url, {
-    headers: {
-      cookie: `Session_id=${sessionId}`,
-    },
-    cache: "no-cache",
-  });
+  try {
+    const responce = await fetch(url, {
+      headers: {
+        cookie: `Session_id=${sessionId}`,
+      },
+      cache: "no-cache",
+    });
 
-  return await responce.text();
+    return await responce.text();
+  } catch (error) {
+    logger.error(error, "Error: fetchContestPage");
+    return "";
+  }
 }
 
 export async function fetchLeaderbord(contestId: string) {
@@ -61,7 +66,9 @@ export async function fetchLeaderbord(contestId: string) {
 }
 
 export async function getContestInfo(contestId: string, sessionId: string) {
-  const $ = cheerio.load(await fetchContestPage(contestId, 1, sessionId));
+  const text = await fetchContestPage(contestId, 1, sessionId);
+  if (!text) return null;
+  const $ = cheerio.load(text);
   const $pager = $(".pager>a")
     .toArray()
     .map((x) => {
