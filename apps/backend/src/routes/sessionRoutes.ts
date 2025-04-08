@@ -6,6 +6,7 @@ export default async function sessionRotes(fastify: FastifyInstance) {
   fastify.get(
     "/api/session",
     {
+      onRequest: fastify.auth([fastify.verifyJWT]),
       schema: sessionSchema.getSchema,
     },
     getSession
@@ -13,6 +14,7 @@ export default async function sessionRotes(fastify: FastifyInstance) {
   fastify.post(
     "/api/session",
     {
+      onRequest: fastify.auth([fastify.verifyJWT]),
       schema: sessionSchema.postSchema,
     },
     updateSession

@@ -1,3 +1,5 @@
+import "@fastify/jwt";
+
 export type ConfigType = {
   [key: string]: string;
 };
@@ -69,3 +71,18 @@ export type StatisticTaskAttempts = {
 };
 
 export type StatisticTaskTotal = Omit<StatisticTaskAttempts, "totalTries">;
+
+declare module "@fastify/jwt" {
+  interface FastifyJWT {
+    payload: { user: string };
+    user: {
+      name: string;
+    };
+  }
+}
+
+declare module "fastify" {
+  export interface FastifyInstance {
+    verifyJWT: (request: FastifyRequest, reply: FastifyReply) => Promise<void>;
+  }
+}

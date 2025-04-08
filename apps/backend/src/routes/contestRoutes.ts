@@ -17,6 +17,7 @@ export default async function contestRoutes(fastify: FastifyInstance) {
   fastify.post(
     "/api/contests",
     {
+      onRequest: fastify.auth([fastify.verifyJWT]),
       schema: contestsSchema.postSchema,
     },
     updateContests
@@ -24,6 +25,7 @@ export default async function contestRoutes(fastify: FastifyInstance) {
   fastify.delete(
     "/api/contests/:id",
     {
+      onRequest: fastify.auth([fastify.verifyJWT]),
       schema: contestsSchema.deleteSchema,
     },
     deleteContest

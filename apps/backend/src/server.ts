@@ -15,6 +15,10 @@ import fastifyEnvConfig from "./plugins/fastifyEnvConfig.js";
 import ratingRoute from "./routes/ratingRoute.js";
 import loggerConfig from "./plugins/loggerConfig.js";
 import statisticRoutes from "./routes/statisticRoutes.js";
+import fastifyAuth from "@fastify/auth";
+import fastifyJwt from "@fastify/jwt";
+import fastifyJwtConfig from "./plugins/fastifyJwtConfig.js";
+import authRoutes from "./routes/authRoutes.js";
 
 const DEFAULT_PORT = 3000;
 dotenv.config();
@@ -24,10 +28,11 @@ const fastify = Fastify({
   ignoreTrailingSlash: true,
   logger: loggerConfig,
 });
+
 export const logger = fastify.log;
 
-await fastify.register(swagger, swaggerConfig);
-await fastify.register(swaggerUi, swaggerUiConfig);
+fastify.register(swagger, swaggerConfig);
+fastify.register(swaggerUi, swaggerUiConfig);
 
 await fastify.register(fastifyEnv, fastifyEnvConfig);
 
@@ -35,11 +40,25 @@ await connectDB(fastify);
 
 fastify.register(cors);
 
+fastify.register(fastifyJwt, fastifyJwtConfig);
+
+fastify
+  .decorate("verifyJWT", async (request) => {
+    try {
+      await request.jwtVerify();
+    } catch (error) {
+      logger.error(error, "jwt verify fail");
+      throw Error("jwt verify fail");
+    }
+  })
+  .register(fastifyAuth);
+
 fastify.register(contestRoutes);
 fastify.register(sessionRotes);
 fastify.register(logRoutes);
 fastify.register(ratingRoute);
 fastify.register(statisticRoutes);
+fastify.register(authRoutes);
 
 fastify.register(contestsCheck);
 

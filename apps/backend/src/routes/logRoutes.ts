@@ -7,6 +7,7 @@ export default async function logRoutes(fastify: FastifyInstance) {
   fastify.get(
     "/api/logs",
     {
+      onRequest: fastify.auth([fastify.verifyJWT]),
       schema: logsSchema.getSchema,
     },
     getLogs
