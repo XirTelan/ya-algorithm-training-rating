@@ -7,6 +7,7 @@ import logService from "../services/logService.js";
 import { logger } from "../server.js";
 import ratingService from "../services/ratingService.js";
 import { createSemaphore } from "../utils.js";
+import axiosInstance from "./axios.js";
 
 const CONTEST_URL = `https://contest.yandex.ru/contest`;
 
@@ -19,14 +20,14 @@ async function fetchContestPage(
 ) {
   const url = `${CONTEST_URL}/${contestId}/standings/?p=${page}`;
   try {
-    const responce = await fetch(url, {
+    const responce = await axiosInstance(url, {
       headers: {
+        "Cache-Control": "no-cache, no-store, must-revalidate",
         cookie: `Session_id=${sessionId}`,
       },
-      cache: "no-cache",
     });
 
-    return await responce.text();
+    return responce.data;
   } catch (error) {
     logger.error(error, `Error: fetchContestPage ${url}`);
     return "";

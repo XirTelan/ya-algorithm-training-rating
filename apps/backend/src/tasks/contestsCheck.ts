@@ -28,15 +28,17 @@ async function checkContests() {
     const tasks = contests.map(async (contest) => {
       if (
         !contest.date ||
-        (contest.autoUpdate > 5 &&
+        (contest.autoUpdate > 0 &&
           Date.now() - contest.autoUpdate * 60 * 1000 > contest.date)
       ) {
-        await fetchLeaderbord(contest.contestId);
-        const msg = `${
-          contest.contestId
-        } updated ${new Date().toLocaleString()}`;
-        logService.addLogEntry(msg, "info");
-        logger.info(msg);
+        const result = await fetchLeaderbord(contest.contestId);
+        if (result) {
+          const msg = `${
+            contest.contestId
+          } updated ${new Date().toLocaleString()}`;
+          logService.addLogEntry(msg, "info");
+          logger.info(msg);
+        }
       }
     });
     await Promise.all(tasks);

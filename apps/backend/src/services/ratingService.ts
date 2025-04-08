@@ -5,7 +5,7 @@ import { logger } from "../server.js";
 import { removeEmailPhone } from "../utils.js";
 
 async function updateRating(data: DataEntry[], contestId: string) {
-  logger.info("updateRating: entries count:", data.length);
+  logger.info(`updateRating: entries count:${data.length}`);
   if (data.length === 0) {
     logService.addLogEntry(
       "Recive 0 entries from leaderboard update.Check  Session_Id",
