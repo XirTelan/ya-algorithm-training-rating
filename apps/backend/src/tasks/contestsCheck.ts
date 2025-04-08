@@ -4,15 +4,28 @@ import { fetchLeaderbord } from "../lib/parser.js";
 import logService from "../services/logService.js";
 import { logger } from "../server.js";
 
+let isJobRunning = false;
+
 export default async function contestsCheck(fastify: FastifyInstance) {
-  fastify.log.info("Starting background job: checkContests");
-  setInterval(checkContests, 60_000);
+  setInterval(async () => {
+    if (isJobRunning) {
+      fastify.log.info("Skipping task");
+      return;
+    }
+
+    isJobRunning = true;
+    fastify.log.info(
+      `Starting job: checkContests ${new Date().toLocaleString()}`
+    );
+    await checkContests();
+    isJobRunning = false;
+  }, 60_000);
 }
 
 async function checkContests() {
   try {
     const contests = await contestService.getContests();
-    contests.forEach(async (contest) => {
+    const tasks = contests.map(async (contest) => {
       if (
         !contest.date ||
         (contest.autoUpdate > 5 &&
@@ -26,7 +39,8 @@ async function checkContests() {
         logger.info(msg);
       }
     });
+    await Promise.all(tasks);
   } catch (error) {
-    console.error(error);
+    logger.error(error);
   }
 }

@@ -6,8 +6,11 @@ import contestService from "../services/contestService.js";
 import logService from "../services/logService.js";
 import { logger } from "../server.js";
 import ratingService from "../services/ratingService.js";
+import { createSemaphore } from "../utils.js";
 
 const CONTEST_URL = `https://contest.yandex.ru/contest`;
+
+const MAX_PAGES = 10;
 
 async function fetchContestPage(
   contestId: string,
@@ -25,7 +28,7 @@ async function fetchContestPage(
 
     return await responce.text();
   } catch (error) {
-    logger.error(error, "Error: fetchContestPage");
+    logger.error(error, `Error: fetchContestPage ${url}`);
     return "";
   }
 }
@@ -47,13 +50,17 @@ export async function fetchLeaderbord(contestId: string) {
   }
 
   const queries = [];
-
+  const semaphore = createSemaphore(MAX_PAGES);
   for (let i = 1; i <= contestInfo.lastPage; i++) {
+    await semaphore.acquire();
     queries.push(
-      parsePage(contestId, i, sessionId, constestData?.attempts ?? "")
+      parsePage(contestId, i, sessionId, constestData?.attempts ?? "").finally(
+        () => semaphore.release()
+      )
     );
   }
   const res = await Promise.all(queries);
+
   await ratingService.updateRating(
     res.reduce((acc, cur) => [...acc, ...cur], []),
     contestId
