@@ -1,18 +1,16 @@
+import axiosInstance from "@/lib/axios";
 import { ContestDTO } from "@/types";
 
 export async function getContests(): Promise<ContestDTO[]> {
-  const responce = await fetch(`/api/contests`);
-  if (responce.ok) {
-    const result = await responce.json();
-    return result;
+  const responce = await axiosInstance(`/api/contests`);
+  if (responce.status == 200) {
+    return responce.data;
   } else return [];
 }
 
 export async function deleteContest(id: string) {
-  const res = await fetch(`/api/contests/${id}`, {
-    method: "DELETE",
-  });
-  const { success } = await res.json();
+  const res = await axiosInstance.delete(`/api/contests/${id}`);
+  const { success } = await res.data;
   if (success) {
     return { success: true };
   } else {
@@ -21,14 +19,8 @@ export async function deleteContest(id: string) {
 }
 
 export async function postContests(data: ContestDTO[]) {
-  const res = await fetch(`/api/contests`, {
-    method: "POST",
-    body: JSON.stringify({ contests: data }),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  if (res.ok) {
+  const res = await axiosInstance.post(`/api/contests`, { contests: data });
+  if (res.status === 200) {
     return { success: true };
   } else {
     return { success: false };

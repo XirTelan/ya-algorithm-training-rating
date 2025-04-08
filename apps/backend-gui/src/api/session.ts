@@ -1,17 +1,12 @@
+import axiosInstance from "@/lib/axios";
 import { SessionDTO } from "@/types";
 
 export async function updateSession(sessionId: string) {
   try {
-    const res = await fetch(`/api/session`, {
-      method: "POST",
-      body: JSON.stringify({
-        sessionId: sessionId,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
+    const res = await axiosInstance.post(`/api/session`, {
+      sessionId: sessionId,
     });
-    if (res.ok) {
+    if (res.status === 200) {
       return { success: true };
     } else {
       return { success: false };
@@ -24,11 +19,13 @@ export async function updateSession(sessionId: string) {
 
 export async function getSession(): Promise<SessionDTO | undefined> {
   try {
-    const res = await fetch(`/api/session`);
-    if (res.ok) {
-      return await res.json();
+    const res = await axiosInstance(`/api/session`);
+    if (res.status === 200) {
+      return await res.data;
     }
+    return undefined;
   } catch (error) {
     console.error(error);
+    return undefined;
   }
 }
