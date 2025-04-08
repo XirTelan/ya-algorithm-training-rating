@@ -110,18 +110,23 @@ docker build -t front-image -f ./apps/frontend/dockerfile .
 Для запуска локально через `pnpm run dev` env должен быть в apps/backend
 
 
-
+Для backend (назначения в [Backend](./apps/backend/))
 ```
 DATABASE_HOST=
 DATABASE_PORT=
 MONGO_BACKEND_USERNAME=
 MONGO_BACKEND_PASSWORD=
 MONGO_BACKEND_DATABASE=
+SERVER_PORT= 
+SERVER_HOST=
+SECRET=
+API_KEY=
+```
+Для mongo
+```
 MONGO_INITDB_ROOT_USERNAME=
 MONGO_INITDB_ROOT_PASSWORD=
 MONGO_INITDB_DATABASE=
-SERVER_PORT= 
-SERVER_HOST= 
 ```
 
 Для mongo-express
