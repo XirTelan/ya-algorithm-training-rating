@@ -2,6 +2,11 @@ import { FastifySchema } from "fastify";
 
 const getSchema: FastifySchema = {
   tags: ["session"],
+  security: [
+    {
+      apiKey: [],
+    },
+  ],
   response: {
     200: {
       type: "object",
@@ -17,6 +22,11 @@ const getSchema: FastifySchema = {
 
 const postSchema: FastifySchema = {
   tags: ["session"],
+  security: [
+    {
+      apiKey: [],
+    },
+  ],
   body: {
     type: "object",
     properties: {

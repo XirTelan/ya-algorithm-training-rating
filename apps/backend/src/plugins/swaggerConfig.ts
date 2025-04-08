@@ -16,13 +16,24 @@ const swaggerConfig: SwaggerOptions = {
       },
     ],
     tags: [
-      { name: "rating", description: "Rating related end-points. " },
-      { name: "statistic", description: "Statistic related end-points" },
+      { name: "auth", description: "auth , login and JWT validation" },
       { name: "contests", description: "Contest related end-points" },
-      { name: "session", description: "Session  related end-points" },
       { name: "logs", description: "Log system related end-points" },
+      { name: "rating", description: "Rating related end-points. " },
+      { name: "session", description: "Session  related end-points" },
+      { name: "statistic", description: "Statistic related end-points" },
     ],
-
+    components: {
+      securitySchemes: {
+        apiKey: {
+          type: "apiKey",
+          name: "Authorization",
+          in: "header",
+          description:
+            "Enter your bearer token in the format **Bearer &lt;token&gt;**",
+        },
+      },
+    },
 
     externalDocs: {
       url: "https://github.com/XirTelan/ya-algorithm-training-rating/",
@@ -35,7 +46,7 @@ export default swaggerConfig;
 export const swaggerUiConfig: FastifySwaggerUiOptions = {
   routePrefix: "/documentation",
   uiConfig: {
-    docExpansion: "full",
+    docExpansion: "list",
     deepLinking: false,
   },
   staticCSP: true,

@@ -3,6 +3,11 @@ import { logDTOSchema } from "./log.schema.js";
 
 const getSchema: FastifySchema = {
   tags: ["logs"],
+  security: [
+    {
+      apiKey: [],
+    },
+  ],
   response: {
     200: {
       type: "object",

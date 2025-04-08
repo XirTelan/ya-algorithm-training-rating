@@ -13,6 +13,11 @@ const getSchema: FastifySchema = {
 
 const postSchema: FastifySchema = {
   tags: ["contests"],
+  security: [
+    {
+      apiKey: [],
+    },
+  ],
   body: {
     type: "object",
     properties: {
@@ -36,6 +41,11 @@ const postSchema: FastifySchema = {
 };
 const deleteSchema: FastifySchema = {
   tags: ["contests"],
+  security: [
+    {
+      apiKey: [],
+    },
+  ],
   params: {
     type: "object",
     properties: {
