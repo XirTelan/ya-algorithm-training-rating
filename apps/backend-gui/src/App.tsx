@@ -8,6 +8,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import { Button } from "@repo/ui/button";
 import { Suspense } from "react";
 import { Skeleton } from "@repo/ui/skeleton";
+import Auth from "./containers/Auth";
 
 function App() {
   return (
@@ -28,22 +29,23 @@ function App() {
             >
               <main className="flex flex-col gap-4 container mx-auto">
                 <ModeToggle />
-                <Suspense
-                  fallback={<Skeleton className="w-full h-18 rounded-xl" />}
-                >
-                  <SessionBlock />
-                </Suspense>
-                <Suspense
-                  fallback={<Skeleton className="w-full h-72 rounded-xl" />}
-                >
-                  <ActiveContests />
-                </Suspense>
-                <Suspense
-                  fallback={<Skeleton className="w-full h-80 rounded-xl" />}
-                >
-                  <Logger />
-                </Suspense>
-
+                <Auth>
+                  <Suspense
+                    fallback={<Skeleton className="w-full h-18 rounded-xl" />}
+                  >
+                    <SessionBlock />
+                  </Suspense>
+                  <Suspense
+                    fallback={<Skeleton className="w-full h-72 rounded-xl" />}
+                  >
+                    <ActiveContests />
+                  </Suspense>
+                  <Suspense
+                    fallback={<Skeleton className="w-full h-80 rounded-xl" />}
+                  >
+                    <Logger />
+                  </Suspense>
+                </Auth>
                 <Toaster />
               </main>
             </ErrorBoundary>
