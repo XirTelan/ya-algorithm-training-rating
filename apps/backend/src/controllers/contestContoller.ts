@@ -36,9 +36,23 @@ export async function deleteContest(
   const { id } = request.params;
 
   if (!id) {
-    return reply.code(400).send();
+    return reply.code(400).send({ message: "Missing contest ID" });
   }
+  try {
+    const deleted = await contestService.deleteContest(id);
 
-  await contestService.deleteContest(id);
-  return reply.code(200).send();
+    if (!deleted) {
+      return reply.code(404).send({ message: "Contest not found" });
+    }
+
+    return reply.code(200).send({ success: true, deleted });
+  } catch (error) {
+    request.log.error(error, `Failed to delete contest with ID: ${id}`);
+    return reply
+      .code(500)
+      .send({
+        message: "Failed to delete contest",
+        error: (error as Error).message,
+      });
+  }
 }

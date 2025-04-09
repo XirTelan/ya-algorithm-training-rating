@@ -30,3 +30,12 @@ export async function getRating(
   }
   return reply.send(res);
 }
+
+export async function deleteAll(request: FastifyRequest, reply: FastifyReply) {
+  try {
+    await ratingService.deleteAll();
+    return reply.code(204).send();
+  } catch (error) {
+    return reply.code(500).send((error as Error).message);
+  }
+}

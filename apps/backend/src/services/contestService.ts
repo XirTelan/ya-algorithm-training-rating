@@ -1,6 +1,7 @@
 import Contest from "../models/Contest.js";
 import { ContestDTO } from "../../types";
 import { logger } from "../server.js";
+import ratingService from "./ratingService.js";
 
 async function getContests(): Promise<ContestDTO[]> {
   try {
@@ -25,8 +26,32 @@ async function getContestById(id: string): Promise<ContestDTO | null> {
 }
 async function deleteContest(id: string) {
   try {
-    const res = await Contest.findByIdAndDelete(id);
-    return res;
+    const contest = await Contest.findById(id);
+    if (!contest) {
+      logger.warn(`No contest found with ID: ${id}`);
+      return null;
+    }
+
+    const { contestId } = contest;
+
+    try {
+      const deleteResult =
+        await ratingService.deleteRecordsByContestId(contestId);
+      logger.info({ deleteResult, contestId }, "Deleted Rating records");
+    } catch (ratingError) {
+      logger.error(
+        { ratingError, contestId },
+        "Failed to delete rating records"
+      );
+      throw new Error(
+        `Failed to delete rating records for contestId: ${contestId}`
+      );
+    }
+
+    const removedContest = await contest.deleteOne();
+    logger.info({ removedContest, id }, "Deleted Contest");
+
+    return removedContest;
   } catch (error) {
     logger.error(error, `contestService/deleteContest with ID: ${id}`);
   }

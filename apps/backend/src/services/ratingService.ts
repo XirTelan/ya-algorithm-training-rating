@@ -210,10 +210,26 @@ async function getUsersTotalAndByContest(
   }
 }
 
+async function deleteRecordsByContestId(contestId: string) {
+  const deleteResult = await Rating.deleteMany({ contestId });
+  return deleteResult;
+}
+
+async function deleteAll() {
+  try {
+    return await Rating.deleteMany({});
+  } catch (error) {
+    logger.error(error, "Cant delete raings");
+    throw error;
+  }
+}
+
 export default {
   filterByUserSearch,
   buildRaiting,
   updateRating,
   getUsersCount,
   getUsersTotalAndByContest,
+  deleteRecordsByContestId,
+  deleteAll,
 };
