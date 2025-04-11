@@ -9,7 +9,7 @@ import {
   TableRow,
 } from "@repo/ui/table";
 
-export default function UpdatesInfo() {
+export function UpdatesInfo() {
   const { data } = useGetContests();
 
   return (

@@ -1,5 +1,5 @@
-import Footer from "@/layout/Footer";
-import Header from "@/layout/Header";
+import { Footer } from "@/widgets/layout";
+import { Header } from "@/widgets/layout";
 import { ThemeProvider } from "@repo/ui";
 import { Button } from "@repo/ui/button";
 import Toaster from "@repo/ui/sonner";

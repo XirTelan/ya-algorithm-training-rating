@@ -1,22 +1,6 @@
-import FilterBlock from "@/features/rating/components/FilterBlock";
-import Leaderboard from "@/widgets/Leaderboard";
 import { Skeleton } from "@repo/ui/skeleton";
-import { Suspense } from "react";
 
-export default function Home() {
-  return (
-    <>
-      <section>
-        <FilterBlock />
-      </section>
-      <Suspense fallback={<SkeletonTable />}>
-        <Leaderboard />
-      </Suspense>
-    </>
-  );
-}
-
-const SkeletonTable = () => (
+export const SkeletonTable = () => (
   <div className="flex flex-col gap-4 w-full">
     <div className="flex w-full">
       <div className="flex w-full gap-4 ">

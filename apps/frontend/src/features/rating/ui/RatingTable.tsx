@@ -15,7 +15,7 @@ type RatingTableProps = {
   data: RatingDTO;
 };
 
-const RatingTable = ({ data }: RatingTableProps) => {
+export const RatingTable = ({ data }: RatingTableProps) => {
   const { data: contests } = useGetContests();
 
   return (
@@ -67,5 +67,3 @@ const RatingTable = ({ data }: RatingTableProps) => {
     </Table>
   );
 };
-
-export default RatingTable;

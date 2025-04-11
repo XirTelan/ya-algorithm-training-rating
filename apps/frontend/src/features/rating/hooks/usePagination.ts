@@ -3,10 +3,7 @@ import { clamp } from "@/utils";
 import { useNavigate } from "@tanstack/react-router";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-export default function usePagination(
-  pageCount: number,
-  pageWindow: number = 5
-) {
+export function usePagination(pageCount: number, pageWindow: number = 5) {
   const { page } = Route.useSearch();
   const navigate = useNavigate({ from: Route.fullPath });
   const [activeIndex, setActiveIndex] = useState(page);

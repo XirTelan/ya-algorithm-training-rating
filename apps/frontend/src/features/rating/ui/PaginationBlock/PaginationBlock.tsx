@@ -6,13 +6,13 @@ import {
 } from "@repo/ui/pagination";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-import usePagination from "../../hooks/usePagination";
+import { usePagination } from "../../hooks/usePagination";
 import PaginationEllipsis from "./PaginationElipsis";
 import PaginationPage from "./PaginationPage";
 
 const PAGINATION_WINDOW = 5;
 
-export default function PaginationBlock({
+export function PaginationBlock({
   pageCount,
   paginationWindow = PAGINATION_WINDOW,
 }: {

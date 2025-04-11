@@ -23,7 +23,6 @@ import {
   TableRow,
 } from "@repo/ui/table";
 import {
-  ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
@@ -39,8 +38,8 @@ import {
 
 import { Separator } from "@repo/ui/separator";
 import { useGetStatisticTasks } from "@/features/statistic/api/useGetStatistic";
-
-const SummaryByTaskAttemptts = () => {
+import { chartConfig } from "../configs/chartConfig";
+export const SummaryByTaskAttemptts = () => {
   const { data: summary } = useGetStatisticTasks();
 
   const chartData = useMemo(
@@ -53,12 +52,6 @@ const SummaryByTaskAttemptts = () => {
       }),
     [summary]
   );
-  const chartConfig = {
-    default: {
-      label: "first",
-      color: "hsl(var(--chart-2))",
-    },
-  } satisfies ChartConfig;
 
   return (
     <div className="flex flex-col items-center ">
@@ -94,7 +87,7 @@ const SummaryByTaskAttemptts = () => {
               <Bar
                 name={"Количество"}
                 dataKey="y"
-                fill="var(--color-default)"
+                fill="var(--color-desktop)"
                 radius={8}
               >
                 <LabelList
@@ -146,5 +139,3 @@ const SummaryByTaskAttemptts = () => {
     </div>
   );
 };
-
-export default SummaryByTaskAttemptts;

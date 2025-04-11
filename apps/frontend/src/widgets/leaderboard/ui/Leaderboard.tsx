@@ -1,12 +1,9 @@
-import useGetRating from "@/features/rating/api/queries/useGetRating";
-import PaginationBlock from "@/features/rating/components/PaginationBlock/PaginationBlock";
-import RatingTable from "@/features/rating/components/RatingTable";
+import { PaginationBlock, RatingTable, useGetRating } from "@/features/rating";
 import { Route } from "@/routes";
-
 
 import React, { Suspense } from "react";
 
-export default function Leaderboard() {
+export function Leaderboard() {
   const searchProps = Route.useSearch();
 
   const { data } = useGetRating(searchProps);

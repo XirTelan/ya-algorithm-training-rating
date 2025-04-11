@@ -1,11 +1,13 @@
-import SummaryByContest from "@/features/statistic/components/SummaryByContest";
-import SummaryByTaskAttemptts from "@/features/statistic/components/SummaryByTaskAttemptts";
-import SummaryByTasks from "@/features/statistic/components/SummaryByTasks";
-import SkeletonBlock from "@/features/statistic/ui/SkeletonBlock";
+import {
+  SummaryByContest,
+  SummaryByTaskAttemptts,
+  SkeletonBlock,
+  SummaryByTasks,
+} from "@/features/statistic";
 import { Separator } from "@repo/ui/separator";
 import React, { Suspense } from "react";
 
-export default function Stats() {
+export function Stats() {
   return (
     <>
       <Suspense fallback={<SkeletonBlock />}>

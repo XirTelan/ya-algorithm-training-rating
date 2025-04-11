@@ -16,7 +16,7 @@ import {
 } from "@repo/ui/table";
 import { ExternalLink } from "lucide-react";
 
-export default function SummaryByContest() {
+export function SummaryByContest() {
   const { data } = useGetContests();
   return (
     <Card className="w-full">

@@ -1,7 +1,6 @@
 import { Separator } from "@repo/ui/separator";
-import React from "react";
 
-export default function Footer() {
+export  function Footer() {
   return (
     <footer className="w-full">
       <Separator className="  h-0.5 my-4" />

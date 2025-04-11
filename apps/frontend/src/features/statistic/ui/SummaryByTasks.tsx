@@ -1,13 +1,7 @@
 import React from "react";
 import { useGetStatisticTaskTotal } from "../api/useGetStatistic";
+import { Card, CardHeader, CardTitle, CardContent } from "@repo/ui/card";
 import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-} from "@repo/ui/card";
-import {
-  ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
@@ -20,17 +14,11 @@ import {
   LabelList,
   BarChart,
 } from "recharts";
+import { chartConfig } from "../configs/chartConfig";
 
-export default function SummaryByTasks() {
+export function SummaryByTasks() {
   const { data } = useGetStatisticTaskTotal();
 
-
-  const chartConfig = {
-    desktop: {
-      label: "Desktop",
-      color: "hsl(var(--chart-2))",
-    },
-  } satisfies ChartConfig;
   return (
     <>
       <Card className="flex w-full">
