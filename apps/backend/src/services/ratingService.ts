@@ -13,14 +13,17 @@ async function updateRating(data: DataEntry[], contestId: string) {
     );
     logger.error("Recive 0 entries from leaderboard update.Check  Session_Id");
   }
+  const seen = new Set();
   const queue = [];
   for (const user of data) {
+    if (seen.has(user.id)) continue;
     const filter = { userId: user.id, contestId: contestId };
     const update = {
       tasks: user.tasks || 0,
       fine: user.fine || 0,
       tries: user.tries || 0,
     };
+    seen.add(user.id);
     queue.push(
       Rating.findOneAndUpdate(filter, update, {
         new: true,
