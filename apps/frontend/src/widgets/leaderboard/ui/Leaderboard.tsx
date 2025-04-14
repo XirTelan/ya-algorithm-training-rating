@@ -13,9 +13,10 @@ export function Leaderboard() {
   return (
     <>
       <section>
-        <Suspense>
-          <RatingTable data={data} />
-        </Suspense>
+          <Suspense>
+            <RatingTable data={data} />
+          </Suspense>
+
       </section>
       <section className="my-2">
         <PaginationBlock pageCount={pageCount} />

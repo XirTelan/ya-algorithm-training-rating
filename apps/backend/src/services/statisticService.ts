@@ -2,6 +2,8 @@ import { StatisticTaskAttempts, StatisticTaskTotal } from "../../types";
 import Rating from "../models/Rating.js";
 import { logger } from "../server.js";
 
+const MAX_LIMIT = 300;
+
 async function getStatTaskTotal(): Promise<StatisticTaskTotal[]> {
   try {
     const results = await Rating.aggregate([
@@ -46,11 +48,6 @@ async function getStatTaskWithAttempts(): Promise<StatisticTaskAttempts[]> {
         },
       },
       {
-        $match: {
-          totalTries: { $lte: 10 },
-        },
-      },
-      {
         $group: {
           _id: { totalTasks: "$totalTasks", totalTries: "$totalTries" },
           userCount: { $sum: 1 },
@@ -66,6 +63,9 @@ async function getStatTaskWithAttempts(): Promise<StatisticTaskAttempts[]> {
       },
       {
         $sort: { totalTasks: -1, totalTries: 1 },
+      },
+      {
+        $limit: MAX_LIMIT,
       },
     ]);
 
