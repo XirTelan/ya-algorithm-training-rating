@@ -7,31 +7,38 @@ import { removeEmailPhone } from "../utils.js";
 async function updateRating(data: DataEntry[], contestId: string) {
   logger.info(`updateRating: entries count:${data.length}`);
   if (data.length === 0) {
-    logService.addLogEntry(
-      "Recive 0 entries from leaderboard update.Check  Session_Id",
-      "warning"
-    );
-    logger.error("Recive 0 entries from leaderboard update.Check  Session_Id");
+    const message =
+      "Received 0 entries from leaderboard update. Check Session_Id";
+    logService.addLogEntry(message, "warning");
+    logger.error(message);
+    return;
   }
+
   const seen = new Set();
-  const queue = [];
+  const operations = [];
+
   for (const user of data) {
     if (seen.has(user.id)) continue;
-    const filter = { userId: user.id, contestId: contestId };
-    const update = {
-      tasks: user.tasks || 0,
-      fine: user.fine || 0,
-      tries: user.tries || 0,
-    };
     seen.add(user.id);
-    queue.push(
-      Rating.findOneAndUpdate(filter, update, {
-        new: true,
+
+    operations.push({
+      updateOne: {
+        filter: { userId: user.id, contestId },
+        update: {
+          $set: {
+            tasks: user.tasks || 0,
+            fine: user.fine || 0,
+            tries: user.tries || 0,
+          },
+        },
         upsert: true,
-      })
-    );
+      },
+    });
   }
-  await Promise.all(queue);
+
+  if (operations.length > 0) {
+    await Rating.bulkWrite(operations);
+  }
 }
 
 async function filterByUserSearch(search: string): Promise<RatingResponse> {
@@ -75,6 +82,13 @@ async function filterByUserSearch(search: string): Promise<RatingResponse> {
         },
       },
     },
+    {
+      $addFields: {
+        byContest: {
+          $arrayToObject: "$byContest",
+        },
+      },
+    },
 
     {
       $sort: { totalTasks: -1, totalTries: 1, totalFine: 1 },
@@ -85,6 +99,7 @@ async function filterByUserSearch(search: string): Promise<RatingResponse> {
   allUsers.forEach((user) => {
     index++;
     if (!matchSet.has(user._id)) return;
+
     results.push({ ...user, _id: removeEmailPhone(user._id), position: index });
   });
   return {
@@ -93,7 +108,7 @@ async function filterByUserSearch(search: string): Promise<RatingResponse> {
   };
 }
 
-async function buildRaiting(
+async function buildRating(
   page: number,
   limit: number
 ): Promise<RatingResponse> {
@@ -229,7 +244,7 @@ async function deleteAll() {
 
 export default {
   filterByUserSearch,
-  buildRaiting,
+  buildRating,
   updateRating,
   getUsersCount,
   getUsersTotalAndByContest,

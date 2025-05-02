@@ -35,7 +35,7 @@ export type LogDTO = {
 
 export type RatingAggregatedDTO = {
   _id: string;
-  byContest: { [key: string]: unknown }[];
+  byContest: { [key: string]: DataEntry };
   position: number;
   totalFine: number;
   totalTasks: number;
