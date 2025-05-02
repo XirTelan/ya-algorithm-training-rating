@@ -45,8 +45,9 @@ export async function fetchLeaderbord(contestId: string) {
   const contestInfo = await getContestInfo(contestId, sessionId);
 
   if (!contestInfo) {
-    logService.addLogEntry(`Contest Info null`, "error");
-    logger.error(`Contest Info null`);
+    const message = `Contest Info null`;
+    logService.addLogEntry(message, "error");
+    logger.error(message);
     return { success: false };
   }
 
@@ -85,8 +86,9 @@ export async function getContestInfo(contestId: string, sessionId: string) {
 
   const $top = $(".table__head>.table__row")[0];
   if (!$top || !$top?.childNodes) {
-    logService.addLogEntry(`Contest Info: $top.childNodes undefined`, "error");
-    logger.error(`Contest Info: $top.childNodes undefined`);
+    const message = `Contest Info: $top.childNodes undefined`;
+    logService.addLogEntry(message, "error");
+    logger.error(message);
     return null;
   }
 

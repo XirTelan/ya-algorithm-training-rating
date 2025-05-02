@@ -26,7 +26,7 @@ export async function getRating(
   if (search) {
     res = await ratingService.filterByUserSearch(search);
   } else {
-    res = await ratingService.buildRaiting(Number(page), Number(limit));
+    res = await ratingService.buildRating(Number(page), Number(limit));
   }
   return reply.send(res);
 }

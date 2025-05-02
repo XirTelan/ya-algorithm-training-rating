@@ -32,10 +32,10 @@ async function checkContests() {
           Date.now() - contest.autoUpdate * 60 * 1000 > contest.date)
       ) {
         const result = await fetchLeaderbord(contest.contestId);
-        if (result) {
+        if (result.success) {
           const msg = `${
             contest.contestId
-          } updated ${new Date().toLocaleString()}`;
+          } updated`;
           logService.addLogEntry(msg, "info");
           logger.info(msg);
         }
