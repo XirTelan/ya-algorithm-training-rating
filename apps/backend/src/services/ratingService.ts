@@ -33,10 +33,13 @@ async function updateRating(data: DataEntry[], contestId: string) {
       },
     });
   }
-
   if (operations.length > 0) {
     const result = await Rating.bulkWrite(operations);
-    logService.addLogEntry(result.toString(), "info");
+
+    logService.addLogEntry(
+      `Modified: ${result.modifiedCount} Upserted: ${result.upsertedCount}`,
+      "info"
+    );
     logger.info(result);
   }
 }
