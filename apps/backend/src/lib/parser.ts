@@ -17,17 +17,17 @@ async function fetchContestPage(
   contestId: string,
   page: number,
   sessionId: string
-) {
+): Promise<string> {
   const url = `${CONTEST_URL}/${contestId}/standings/?p=${page}`;
   try {
-    const responce = await axiosInstance(url, {
+    const response = await axiosInstance(url, {
       headers: {
         "Cache-Control": "no-cache, no-store, must-revalidate",
         cookie: `Session_id=${sessionId}`,
       },
     });
 
-    return responce.data;
+    return response.data;
   } catch (error) {
     logger.error(error, `Error: fetchContestPage ${url}`);
     return "";
@@ -50,7 +50,6 @@ export async function fetchLeaderbord(contestId: string) {
     logger.error(message);
     return { success: false };
   }
-
   const queries = [];
   const semaphore = createSemaphore(MAX_PAGES);
   for (let i = 1; i <= contestInfo.lastPage; i++) {
@@ -62,11 +61,9 @@ export async function fetchLeaderbord(contestId: string) {
     );
   }
   const res = await Promise.all(queries);
+  const dataEntries = res.reduce((acc, cur) => [...acc, ...cur], []);
 
-  await ratingService.updateRating(
-    res.reduce((acc, cur) => [...acc, ...cur], []),
-    contestId
-  );
+  await ratingService.updateRating(dataEntries, contestId);
   await contestService.updateContestById(contestId, {
     stats: contestInfo.total,
     date: Date.now(),
@@ -78,35 +75,51 @@ export async function getContestInfo(contestId: string, sessionId: string) {
   const text = await fetchContestPage(contestId, 1, sessionId);
   if (!text) return null;
   const $ = cheerio.load(text);
-  const $pager = $(".pager>a")
-    .toArray()
-    .map((x) => {
-      return $(x).text();
-    });
 
-  const $top = $(".table__head>.table__row")[0];
-  if (!$top || !$top?.childNodes) {
-    const message = `Contest Info: $top.childNodes undefined`;
+  const $headerRow = $(".table__head > .table__row").first();
+
+  if (!$headerRow || !$headerRow[0]?.childNodes) {
+    const message = `Contest Info: Table header row undefined`;
     logService.addLogEntry(message, "error");
     logger.error(message);
     return null;
   }
 
-  const tasksInfo = $top.childNodes
-    .slice(2, $top.childNodes.length - 2)
-    .map((x) => {
-      const str = $(x).text();
-      const [success, attempts] = str.slice(1).split("/").map(Number);
-      return { task: str[0], success, attempts };
-    });
+  const taskNodes = $headerRow[0].childNodes.slice(2, -2);
+  const tasksInfo: TaskInfo[] = [];
 
-  const lastPage = Number($pager.at(-1));
+  for (const node of taskNodes) {
+    const text = $(node).text().trim();
+    const task = text[0];
+    const parts = text.slice(1).split("/");
 
-  const result = {
-    total: tasksInfo ?? [],
-    lastPage: isNaN(lastPage) ? 1 : lastPage,
+    if (parts.length !== 2) continue;
+
+    const [success, attempts] = parts.map(Number);
+    if (isNaN(success) || isNaN(attempts)) continue;
+
+    tasksInfo.push({ task, success, attempts });
+  }
+
+  let lastPage = extractLastPageNumber($);
+  if (isNaN(lastPage)) {
+    // if its NaN its -> and then there 11th page. look if it last page or more
+    const fallbackHtml = await fetchContestPage(contestId, 11, sessionId);
+    lastPage = extractLastPageNumber(cheerio.load(fallbackHtml));
+  }
+  logService.addLogEntry(`Page count: ${lastPage}`, "info");
+
+  return {
+    total: tasksInfo,
+    lastPage: !lastPage || isNaN(lastPage) ? 1 : lastPage,
   };
-  return result;
+}
+
+function extractLastPageNumber($: cheerio.CheerioAPI) {
+  const pages = $(".pager > a")
+    .toArray()
+    .map((el) => Number($(el).text()));
+  return pages.at(-1) ?? NaN;
 }
 
 async function parsePage(
@@ -153,3 +166,9 @@ async function parsePage(
   });
   return pageData;
 }
+
+type TaskInfo = {
+  task: string;
+  success: number;
+  attempts: number;
+};
