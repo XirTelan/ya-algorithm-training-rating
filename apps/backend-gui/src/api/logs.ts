@@ -6,13 +6,13 @@ export async function getLogs(
   time: string
 ): Promise<LogEntry[]> {
   try {
-    const res = await axiosInstance(`/api/logs?type=${type}&time=${time}`);
-    if (res.status === 200 && res.data.status) {
-      return res.data.data ?? [];
-    } else return [];
+    const res = await axiosInstance.get(`/api/logs`, {
+      params: { type, time },
+    });
+
+    return res.data?.data ?? [];
   } catch (error) {
     console.error(error);
     return [];
   }
 }
-

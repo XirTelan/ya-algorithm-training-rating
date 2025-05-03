@@ -37,7 +37,7 @@ export const RatingTable = ({ data }: RatingTableProps) => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {data.items.map((item, i) => (
+        {data.items?.map((item, i) => (
           <TableRow key={i}>
             <TableCell>{item.position}</TableCell>
             <TableCell>{item._id}</TableCell>

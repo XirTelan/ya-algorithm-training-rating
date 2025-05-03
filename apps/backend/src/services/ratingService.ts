@@ -25,11 +25,9 @@ async function updateRating(data: DataEntry[], contestId: string) {
       updateOne: {
         filter: { userId: user.id, contestId },
         update: {
-          $set: {
-            tasks: user.tasks || 0,
-            fine: user.fine || 0,
-            tries: user.tries || 0,
-          },
+          tasks: user.tasks || 0,
+          fine: user.fine || 0,
+          tries: user.tries || 0,
         },
         upsert: true,
       },
@@ -37,7 +35,9 @@ async function updateRating(data: DataEntry[], contestId: string) {
   }
 
   if (operations.length > 0) {
-    await Rating.bulkWrite(operations);
+    const result = await Rating.bulkWrite(operations);
+    logService.addLogEntry(result.toString(), "info");
+    logger.info(result);
   }
 }
 
